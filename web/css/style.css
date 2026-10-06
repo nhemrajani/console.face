@@ -131,3 +131,19 @@ button.primary:hover { background: var(--ink); color: var(--paper); }
 .why b { font-weight: 600; }
 .why span { color: #444; }
 .face .cap small { display: block; font-family: var(--ui); font-size: 10px; color: var(--muted); margin-top: -2px; }
+
+.present-btn { background: var(--ink) !important; color: var(--paper) !important; border-color: var(--ink) !important; }
+
+/* ---- presentation mode: just the drawing ---- */
+.wordmark { display: none; }
+body.present header, body.present .controls, body.present .explain { display: none; }
+body.present main { display: block; padding: 0; }
+body.present #stage { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+body.present .sketch { max-width: min(92vw, 74vh); width: 100%; }
+body.present .now { font-size: 40px; min-height: 52px; }
+body.present .now small { font-size: 13px; margin-top: 2px; }
+body.present .sketch-bar { border: none; justify-content: center; }
+body.present .sketch-bar > :not(.metro):not(.bpm) { display: none; }
+body.present .bpm { flex: none; }
+body.present .wordmark { display: block; position: fixed; left: 24px; bottom: 20px; font-family: var(--mono); font-weight: 700; font-size: 18px; }
+body.present .wordmark span { display: block; font-weight: 500; font-size: 11px; color: var(--muted); }

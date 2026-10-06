@@ -192,6 +192,7 @@ export function installConsoleFace() {
     const title = song ? `${song.title} · ${song.artist}` : name;
     const mood = taste.valence < 0.35 ? "sad" : taste.valence > 0.65 ? "happy" : "bittersweet";
     console.log(`%c${title}%c\n${style.pen} · ${style.accentName} · ${mood} · ${Math.round(taste.tempo)} BPM`, "font-family: Caveat, cursive; font-size: 22px; color: " + style.ink, "font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #888");
+    if (song?.persona) console.log(`%c“${song.persona.summary}”`, "font-family: Georgia, serif; font-style: italic; font-size: 12px; color: #666");
     if (!song) console.log("%c(no data for this song yet, so this face is a guess from its name)", "font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #aaa; font-style: italic");
   };
   Object.defineProperty(console, "face", { value: face, configurable: true, writable: true });

@@ -20,6 +20,10 @@ Then open http://localhost:8123.
 - **Sitters** shows six faces in the current style (click one to watch it drawn).
 - **Compare tastes** shows the same four people drawn by eight different "artists".
 
+### Filming a demo
+
+Press **P** (or open http://localhost:8123/?present) for presentation mode: just the drawing, each song drawn after the other at its own tempo. **Esc** exits. To make it quicker, set the speed slider before pressing P.
+
 ### The hidden one
 
 Open the browser console and type:

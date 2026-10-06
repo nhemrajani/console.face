@@ -62,18 +62,58 @@ export function guessTaste(name) {
   };
 }
 
-// A first taste of Milestone 5: persona details nudge the face.
+// Lyric persona -> face. Each detail phrase nudges one part of the face.
+// Add new phrases here; they're matched as plain text inside persona.details.
+const DETAIL_RULES = [
+  ["averted", (f) => (f.eyes.gaze = [0.85, -0.15])],
+  ["looking up", (f) => ((f.eyes.gaze = [0.15, 1]), (f.pose.pitch = -0.1))],
+  ["looking down", (f) => ((f.eyes.gaze = [-0.1, -1]), (f.pose.pitch = 0.14))],
+  ["eyes closed", (f) => (f.eyes.type = "sleepy")],
+  ["wide eyes", (f) => ((f.eyes.lid = 0), (f.eyes.w *= 1.2), f.eyes.type === "sleepy" && (f.eyes.type = "round"))],
+  ["heavy-lid", (f) => (f.eyes.lid = Math.max(f.eyes.lid, 0.5))],
+  ["smirk", (f) => Object.assign(f.mouth, { smirk: 0.75, smile: 0.05, open: 0 })],
+  ["big grin", (f) => Object.assign(f.mouth, { smile: 0.95, open: 0.65, smirk: 0 })],
+  ["open mouth", (f) => (f.mouth.open = Math.max(f.mouth.open, 0.7))],
+  ["frown", (f) => Object.assign(f.mouth, { smile: -0.65, open: 0, smirk: 0 })],
+  ["tear", (f) => (f.acc.tear = true)],
+  ["stubble", (f) => (f.details.stubble = 0.85)],
+  ["freckles", (f) => (f.details.freckles = 20)],
+  ["blush", (f) => (f.details.blush = true)],
+  ["chain", (f) => (f.acc.chain = true)],
+  ["sunglasses", (f) => (f.acc.glasses = "sun")],
+  ["round glasses", (f) => (f.acc.glasses = "round")],
+  ["headphones", (f) => (f.acc.headphones = true)],
+  ["earring", (f) => (f.acc.earring = true)],
+  ["beanie", (f) => (f.acc.beanie = true)],
+  ["messy hair", (f) => (f.hair.style = "messy")],
+  ["long hair", (f) => (f.hair.style = "long")],
+  ["wavy hair", (f) => (f.hair.style = "wavy")],
+  ["curly hair", (f) => (f.hair.style = "curly")],
+  ["buzz", (f) => (f.hair.style = "buzz")],
+  ["bun", (f) => (f.hair.style = "bun")],
+  ["fringe", (f) => (f.hair.style = "fringe")],
+  ["head tilted", (f) => (f.pose.roll = (f.pose.roll >= 0 ? 1 : -1) * 0.22)],
+];
+
+const HAPPY = ["happy", "playful", "confident", "hopeful"];
+const SAD = ["sad", "bitter", "longing", "heartbroken", "anxious", "bittersweet"];
+
 export function applyPersona(face, persona) {
   if (!persona) return face;
   const f = structuredClone(face);
-  const has = (k) => persona.details.some((d) => d.includes(k));
-  if (has("averted")) f.eyes.gaze = [0.85, -0.2];
-  if (has("smirk")) Object.assign(f.mouth, { smirk: 0.75, smile: 0.05, open: 0 });
-  if (has("heavy-lid")) f.eyes.lid = Math.max(f.eyes.lid, 0.5);
-  if (has("stubble")) f.details.stubble = 0.85;
-  if (has("chain")) f.acc.chain = true;
-  if (has("tear")) f.acc.tear = true;
-  if (has("sunglasses")) f.acc.glasses = "sun";
-  if (persona.sentiment === "bitter" || persona.sentiment === "sad") f.mouth.smile = Math.min(f.mouth.smile, 0);
+  // the overall feeling first...
+  if (HAPPY.includes(persona.sentiment)) f.mouth.smile = Math.max(f.mouth.smile, 0.35);
+  if (SAD.includes(persona.sentiment)) {
+    f.mouth.smile = Math.min(f.mouth.smile, persona.sentiment === "bittersweet" ? 0.05 : -0.3);
+    f.brows.tilt = Math.min(f.brows.tilt, -0.3);
+  }
+  if (persona.sentiment === "anxious") f.brows.tilt = -0.8;
+  // ...then the specific details, which win
+  for (const detail of persona.details) {
+    const d = detail.toLowerCase();
+    for (const [phrase, apply] of DETAIL_RULES) if (d.includes(phrase)) apply(f);
+  }
+  // sunglasses and round glasses both contain "glasses": the more specific one wins
+  if (persona.details.some((d) => d.toLowerCase().includes("round glasses"))) f.acc.glasses = "round";
   return f;
 }

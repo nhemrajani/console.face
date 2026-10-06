@@ -32,7 +32,23 @@
         "mode": 0
       },
       "tempo_felt": 76.5,
-      "persona": null
+      "persona": {
+        "summary": "A man on a sunset balcony rereading a text, baffled that someone he was kind to has blocked him everywhere.",
+        "themes": [
+          "mixed signals",
+          "rejection",
+          "sunset",
+          "ocean"
+        ],
+        "sentiment": "bittersweet",
+        "details": [
+          "averted gaze",
+          "heavy-lidded",
+          "stubble",
+          "frown"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "0aHM1klz6sGAmpjRPXkjMq",
@@ -42,7 +58,22 @@
       "duration_ms": 256179,
       "audio": null,
       "tempo_felt": null,
-      "persona": null
+      "persona": {
+        "summary": "A heartbroken show-off on a private jet, flexing hard so nobody sees he hopes she still thinks of him.",
+        "themes": [
+          "heartbreak",
+          "jet-set",
+          "pride",
+          "summer memories"
+        ],
+        "sentiment": "bitter",
+        "details": [
+          "sunglasses",
+          "gold chain",
+          "half smirk"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "1lhakluflmCQiaL4sjPMQA",
@@ -62,7 +93,22 @@
         "mode": 0
       },
       "tempo_felt": 73.0,
-      "persona": null
+      "persona": {
+        "summary": "A cocky young charmer juggling texts between long shifts, insisting she's the only one he really notices.",
+        "themes": [
+          "flirting",
+          "jealousy",
+          "hustle",
+          "phone"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "half smirk",
+          "earring",
+          "head tilted"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "5bi0gh89wRuH2OgjdAKFsb",
@@ -82,7 +128,24 @@
         "mode": 0
       },
       "tempo_felt": 100.0,
-      "persona": null
+      "persona": {
+        "summary": "A dancer lost in a hot, packed club, worshipping the person in front of them like a saint.",
+        "themes": [
+          "desire",
+          "dancing",
+          "heat",
+          "devotion"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "eyes closed",
+          "big grin",
+          "earring",
+          "wavy hair",
+          "blush"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "3h5T5JypYU7huFiVYhv1dr",
@@ -92,7 +155,24 @@
       "duration_ms": 225834,
       "audio": null,
       "tempo_felt": null,
-      "persona": null
+      "persona": {
+        "summary": "Someone staring at a silent phone at 2am, knowing they shouldn't still want them, wanting them anyway.",
+        "themes": [
+          "longing",
+          "an ex",
+          "night",
+          "nostalgia"
+        ],
+        "sentiment": "longing",
+        "details": [
+          "looking down",
+          "heavy-lidded",
+          "long hair",
+          "blush",
+          "earring"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "5KAf8g6qHv455isa8BN7dX",
@@ -112,7 +192,22 @@
         "mode": 1
       },
       "tempo_felt": 157.4,
-      "persona": null
+      "persona": {
+        "summary": "A magnetic, self-assured seductress who knows exactly what you need before you say a word.",
+        "themes": [
+          "desire",
+          "confidence",
+          "closeness"
+        ],
+        "sentiment": "confident",
+        "details": [
+          "half smirk",
+          "heavy-lidded",
+          "earring",
+          "long hair"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "0PMhBcbq0a5EDngAlVQLAy",
@@ -122,7 +217,22 @@
       "duration_ms": 156076,
       "audio": null,
       "tempo_felt": null,
-      "persona": null
+      "persona": {
+        "summary": "A swaggering party-starter in the club, stacking notes and calling the whole room to light it up.",
+        "themes": [
+          "party",
+          "money",
+          "swagger",
+          "night"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "sunglasses",
+          "gold chain",
+          "big grin"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "0O6lm9N6qJclxNFHl51nkr",
@@ -132,7 +242,22 @@
       "duration_ms": 203746,
       "audio": null,
       "tempo_felt": null,
-      "persona": null
+      "persona": {
+        "summary": "A restless jet-setter whose mum is begging him to settle down, asking a lover if they've forgotten home.",
+        "themes": [
+          "home",
+          "roots",
+          "settling down",
+          "fame"
+        ],
+        "sentiment": "bittersweet",
+        "details": [
+          "averted gaze",
+          "stubble",
+          "half smirk"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "4YmS7BALpAU0h4EAF4fYuh",
@@ -152,7 +277,23 @@
         "mode": 1
       },
       "tempo_felt": 93.0,
-      "persona": null
+      "persona": {
+        "summary": "A grinning racer with his pride in the rear-view mirror, done arguing, only getting faster.",
+        "themes": [
+          "speed",
+          "pride",
+          "moving on",
+          "self-improvement"
+        ],
+        "sentiment": "confident",
+        "details": [
+          "big grin",
+          "sunglasses",
+          "messy hair",
+          "head tilted"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "2dono2Koz7DEvGwxUsmMLq",
@@ -172,7 +313,22 @@
         "mode": 1
       },
       "tempo_felt": 98.2,
-      "persona": null
+      "persona": {
+        "summary": "A fool in love, heart on his sleeve, who can't let go of someone he saw holding another hand.",
+        "themes": [
+          "betrayal",
+          "devotion",
+          "heartbreak"
+        ],
+        "sentiment": "sad",
+        "details": [
+          "looking down",
+          "tear",
+          "messy hair",
+          "heavy-lidded"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "1qPbGZqppFwLwcBC1JQ6Vr",
@@ -192,7 +348,21 @@
         "mode": 1
       },
       "tempo_felt": 87.2,
-      "persona": null
+      "persona": {
+        "summary": "A shy dreamer with everything to say and no way to say it, quietly hoping someone will save him.",
+        "themes": [
+          "hope",
+          "unspoken feelings",
+          "winding roads"
+        ],
+        "sentiment": "hopeful",
+        "details": [
+          "fringe",
+          "looking up",
+          "stubble"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "4cgjA7B4fJBHyB9Ya2bu0t",
@@ -212,7 +382,23 @@
         "mode": 1
       },
       "tempo_felt": 93.0,
-      "persona": null
+      "persona": {
+        "summary": "A dreamy night owl gazing over a sleepless city, curious, restless and a little mischievous.",
+        "themes": [
+          "night",
+          "city",
+          "curiosity",
+          "temptation"
+        ],
+        "sentiment": "happy",
+        "details": [
+          "looking up",
+          "wide eyes",
+          "half smirk",
+          "curly hair"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "30VrBsh1STRBoIrhQOAwzK",
@@ -232,7 +418,23 @@
         "mode": 0
       },
       "tempo_felt": 124.9,
-      "persona": null
+      "persona": {
+        "summary": "Someone fighting a darkness inside their own head, half scared of it, half thrilled.",
+        "themes": [
+          "anxiety",
+          "darkness",
+          "night",
+          "madness"
+        ],
+        "sentiment": "anxious",
+        "details": [
+          "wide eyes",
+          "fringe",
+          "frown",
+          "earring"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "582EVyAFKmKPa1bVPSDurJ",
@@ -252,7 +454,23 @@
         "mode": 1
       },
       "tempo_felt": 120.6,
-      "persona": null
+      "persona": {
+        "summary": "A scrappy lad from a rough estate who got out, cigarette in hand, waving goodbye to yesterday with a grin.",
+        "themes": [
+          "escape",
+          "home town",
+          "rebellion",
+          "survival"
+        ],
+        "sentiment": "hopeful",
+        "details": [
+          "half smirk",
+          "messy hair",
+          "stubble",
+          "freckles"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "4GXl8l1MfZPf2GvpyRPJBf",
@@ -272,7 +490,23 @@
         "mode": 0
       },
       "tempo_felt": 136.9,
-      "persona": null
+      "persona": {
+        "summary": "A zoned-out flexer in a fast car, dripping in ice, begging someone to just answer the phone.",
+        "themes": [
+          "luxury",
+          "phone",
+          "night",
+          "desire"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "sunglasses",
+          "gold chain",
+          "heavy-lidded",
+          "earring"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "3a8tAZFJxlmBwOtrf5L1oC",
@@ -292,7 +526,23 @@
         "mode": 1
       },
       "tempo_felt": 105.4,
-      "persona": null
+      "persona": {
+        "summary": "A cold, untouchable boss who admits nothing, trusts no one and puts money first.",
+        "themes": [
+          "power",
+          "money",
+          "rivalry",
+          "loyalty"
+        ],
+        "sentiment": "confident",
+        "details": [
+          "frown",
+          "stubble",
+          "gold chain",
+          "heavy-lidded"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "5Ggfa9cpkpfp5D6Rg0Yyw1",
@@ -312,7 +562,22 @@
         "mode": 1
       },
       "tempo_felt": 81.9,
-      "persona": null
+      "persona": {
+        "summary": "A late-night texter missing old nights at your place, asking you to just get in the car and come over.",
+        "themes": [
+          "late night",
+          "nostalgia",
+          "longing"
+        ],
+        "sentiment": "longing",
+        "details": [
+          "averted gaze",
+          "half smirk",
+          "stubble",
+          "heavy-lidded"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "2VjXGuPVVxyhMgER3Uz2Fe",
@@ -332,7 +597,22 @@
         "mode": 0
       },
       "tempo_felt": 80.0,
-      "persona": null
+      "persona": {
+        "summary": "A woman worn down by a love that keeps hurting her, still unable to stop letting him back in.",
+        "themes": [
+          "heartbreak",
+          "cycles",
+          "reciprocity"
+        ],
+        "sentiment": "sad",
+        "details": [
+          "tear",
+          "looking down",
+          "curly hair",
+          "earring"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "2YiCMmONQcoMPX2bV1LxE0",
@@ -352,7 +632,22 @@
         "mode": 1
       },
       "tempo_felt": 112.1,
-      "persona": null
+      "persona": {
+        "summary": "A wide-eyed romantic in an 80s coat watching the whole world grab for power, wanting only freedom.",
+        "themes": [
+          "power",
+          "ambition",
+          "freedom",
+          "the 80s"
+        ],
+        "sentiment": "bittersweet",
+        "details": [
+          "looking up",
+          "messy hair",
+          "wide eyes"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "6kksmL4t09IgxhajuVDDxR",
@@ -372,7 +667,23 @@
         "mode": 0
       },
       "tempo_felt": 98.4,
-      "persona": null
+      "persona": {
+        "summary": "A guarded high-roller cruising the freeway alone at night, slow to trust but loyal once he does.",
+        "themes": [
+          "night",
+          "driving",
+          "trust",
+          "money"
+        ],
+        "sentiment": "longing",
+        "details": [
+          "sunglasses",
+          "gold chain",
+          "heavy-lidded",
+          "stubble"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "524wvipGqxPKYWxkjf9y46",
@@ -392,7 +703,21 @@
         "mode": 0
       },
       "tempo_felt": 120.4,
-      "persona": null
+      "persona": {
+        "summary": "Someone too proud to admit they're falling, eyes shut, thinking only of you.",
+        "themes": [
+          "pride",
+          "secret love",
+          "vulnerability"
+        ],
+        "sentiment": "hopeful",
+        "details": [
+          "eyes closed",
+          "blush",
+          "half smirk"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "25tXNghelZKdGZZVoSL9Yg",
@@ -412,7 +737,22 @@
         "mode": 1
       },
       "tempo_felt": 102.8,
-      "persona": null
+      "persona": {
+        "summary": "Done with the arguing but still wearing your name on a chain, torn between pride and what you could have been.",
+        "themes": [
+          "conflict",
+          "love",
+          "pride",
+          "what could have been"
+        ],
+        "sentiment": "bittersweet",
+        "details": [
+          "gold chain",
+          "averted gaze",
+          "stubble"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "1UZOjK1BwmwWU14Erba9CZ",
@@ -432,7 +772,23 @@
         "mode": 1
       },
       "tempo_felt": 139.9,
-      "persona": null
+      "persona": {
+        "summary": "A newly free spirit at the beach for the first time, sun on her face, simply and completely happy.",
+        "themes": [
+          "ocean",
+          "freedom",
+          "summer",
+          "new love"
+        ],
+        "sentiment": "happy",
+        "details": [
+          "big grin",
+          "wavy hair",
+          "freckles",
+          "blush"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "5d01AUplB1QOZY3kPrAuot",
@@ -452,7 +808,23 @@
         "mode": 1
       },
       "tempo_felt": 70.0,
-      "persona": null
+      "persona": {
+        "summary": "A cheeky London rapper roasting everyone from the back of a Rolls, too sharp to take seriously.",
+        "themes": [
+          "London",
+          "flexing",
+          "humour",
+          "cars"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "half smirk",
+          "gold chain",
+          "buzz cut",
+          "earring"
+        ],
+        "source": "written by Claude in chat"
+      }
     },
     {
       "id": "60QLLec3yKDwloXCyummPy",
@@ -472,7 +844,22 @@
         "mode": 1
       },
       "tempo_felt": 146.7,
-      "persona": null
+      "persona": {
+        "summary": "A charming oddball smitten with a girl from a wonderfully eccentric family.",
+        "themes": [
+          "crush",
+          "eccentric family",
+          "wit"
+        ],
+        "sentiment": "playful",
+        "details": [
+          "big grin",
+          "fringe",
+          "round glasses",
+          "wide eyes"
+        ],
+        "source": "written by Claude in chat"
+      }
     }
   ]
 }

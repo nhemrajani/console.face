@@ -73,7 +73,13 @@ function buildControls() {
     sketchSeed = null;
     renderSketch();
   };
-  document.querySelectorAll(".tabs button").forEach((b) => (b.onclick = () => setView(b.dataset.view)));
+  document.querySelectorAll(".tabs button[data-view]").forEach((b) => (b.onclick = () => setView(b.dataset.view)));
+  $("#present").onclick = () => setPresent(true);
+  document.addEventListener("keydown", (e) => {
+    if (e.target.closest("input, select, textarea")) return;
+    if (e.key === "p" || e.key === "P") setPresent(!document.body.classList.contains("present"));
+    if (e.key === "Escape") setPresent(false);
+  });
   $("#grid").onclick = (e) => {
     const cell = e.target.closest("[data-seed], [data-song]");
     if (!cell) return;
@@ -86,9 +92,19 @@ function buildControls() {
   syncSliders();
 }
 
+// Presentation mode for filming: just the drawing, playing through the playlist.
+function setPresent(on) {
+  document.body.classList.toggle("present", on);
+  if (on) {
+    $("#autoplay").checked = usingPlaylist();
+    $("#wm-sub").textContent = usingPlaylist() ? `${PLAYLIST.playlist.name} · ${PLAYLIST.playlist.owner}` : "";
+    setView("sketch");
+  }
+}
+
 function setView(v) {
   view = v;
-  document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
+  document.querySelectorAll(".tabs button[data-view]").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
   render();
 }
 
@@ -223,6 +239,7 @@ async function start() {
   }
   buildControls();
   render();
+  if (new URLSearchParams(location.search).has("present")) setPresent(true);
 }
 
 start();

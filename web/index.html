@@ -15,7 +15,7 @@
     <p class="sub">Music in, faces out. The song decides how the pen moves.</p>
     <nav class="tabs">
       <button data-view="sketch" class="active">Sketch</button>
-      <button data-view="one">Sitters</button>
+      <button data-view="one" id="sheet-tab">Sitters</button>
       <button data-view="compare">Compare tastes</button>
     </nav>
   </header>
@@ -31,11 +31,14 @@
 
     <section id="stage">
       <div id="sketch" class="sketch">
+        <div class="now" id="now"></div>
         <svg id="sketch-svg" role="img" aria-label="A face being sketched"></svg>
         <div class="sketch-bar">
           <span class="metro" id="metro"></span>
           <span id="bpm" class="bpm"></span>
+          <select id="song" aria-label="Song"></select>
           <button id="redraw">Draw again</button>
+          <label class="auto"><input type="checkbox" id="autoplay" /> play the playlist</label>
           <label class="speed">speed <input type="range" id="speed" min="0.5" max="4" step="0.25" value="1" /><span id="speed-val">1×</span></label>
         </div>
       </div>
@@ -44,7 +47,11 @@
     </section>
 
     <aside class="explain">
-      <h2>The artist this music makes</h2>
+      <div id="song-why-box" hidden>
+        <h2>This song → this face</h2>
+        <div id="song-why"></div>
+      </div>
+      <h2 class="gap-first">The artist this music makes</h2>
       <div id="artist"></div>
       <h2 class="gap">Music → style</h2>
       <div id="mapping"></div>

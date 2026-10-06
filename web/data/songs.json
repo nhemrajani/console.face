@@ -1,0 +1,478 @@
+{
+  "playlist": {
+    "name": "console.faces()",
+    "owner": "Neeharika",
+    "url": "https://open.spotify.com/playlist/0VeR8rp0x0tIKIb2bqEFpP",
+    "taste": {
+      "tempo": 105.6,
+      "energy": 0.623,
+      "valence": 0.533,
+      "acousticness": 0.212,
+      "danceability": 0.631,
+      "speechiness": 0.123,
+      "variety": 0.594
+    }
+  },
+  "songs": [
+    {
+      "id": "3oZZfVvLJuDYc4Vn3A63Fw",
+      "title": "Polar Opposites",
+      "artist": "Drake",
+      "url": "https://open.spotify.com/track/3oZZfVvLJuDYc4Vn3A63Fw",
+      "duration_ms": 257180,
+      "audio": {
+        "tempo": 76.513,
+        "energy": 0.274,
+        "valence": 0.343,
+        "acousticness": 0.0924,
+        "danceability": 0.44,
+        "speechiness": 0.0809,
+        "loudness": -14.464,
+        "key": 5,
+        "mode": 0
+      },
+      "tempo_felt": 76.5,
+      "persona": null
+    },
+    {
+      "id": "0aHM1klz6sGAmpjRPXkjMq",
+      "title": "Say What (feat. PARTYNEXTDOOR)",
+      "artist": "Trippie Redd, PARTYNEXTDOOR",
+      "url": "https://open.spotify.com/track/0aHM1klz6sGAmpjRPXkjMq",
+      "duration_ms": 256179,
+      "audio": null,
+      "tempo_felt": null,
+      "persona": null
+    },
+    {
+      "id": "1lhakluflmCQiaL4sjPMQA",
+      "title": "Love & Attention",
+      "artist": "SamRecks",
+      "url": "https://open.spotify.com/track/1lhakluflmCQiaL4sjPMQA",
+      "duration_ms": 157808,
+      "audio": {
+        "tempo": 145.99,
+        "energy": 0.546,
+        "valence": 0.496,
+        "acousticness": 0.329,
+        "danceability": 0.745,
+        "speechiness": 0.177,
+        "loudness": -10.582,
+        "key": 11,
+        "mode": 0
+      },
+      "tempo_felt": 73.0,
+      "persona": null
+    },
+    {
+      "id": "5bi0gh89wRuH2OgjdAKFsb",
+      "title": "Santa",
+      "artist": "Rvssian, Rauw Alejandro, Ayra Starr",
+      "url": "https://open.spotify.com/track/5bi0gh89wRuH2OgjdAKFsb",
+      "duration_ms": 193038,
+      "audio": {
+        "tempo": 99.993,
+        "energy": 0.709,
+        "valence": 0.648,
+        "acousticness": 0.321,
+        "danceability": 0.725,
+        "speechiness": 0.129,
+        "loudness": -5.017,
+        "key": 3,
+        "mode": 0
+      },
+      "tempo_felt": 100.0,
+      "persona": null
+    },
+    {
+      "id": "3h5T5JypYU7huFiVYhv1dr",
+      "title": "BbY WOW",
+      "artist": "KAROL G, Judeline, rusowsky",
+      "url": "https://open.spotify.com/track/3h5T5JypYU7huFiVYhv1dr",
+      "duration_ms": 225834,
+      "audio": null,
+      "tempo_felt": null,
+      "persona": null
+    },
+    {
+      "id": "5KAf8g6qHv455isa8BN7dX",
+      "title": "Breathe Me",
+      "artist": "Tyla",
+      "url": "https://open.spotify.com/track/5KAf8g6qHv455isa8BN7dX",
+      "duration_ms": 201110,
+      "audio": {
+        "tempo": 157.425,
+        "energy": 0.642,
+        "valence": 0.381,
+        "acousticness": 0.0253,
+        "danceability": 0.459,
+        "speechiness": 0.132,
+        "loudness": -6.504,
+        "key": 1,
+        "mode": 1
+      },
+      "tempo_felt": 157.4,
+      "persona": null
+    },
+    {
+      "id": "0PMhBcbq0a5EDngAlVQLAy",
+      "title": "Pilé",
+      "artist": "Mauvais djo",
+      "url": "https://open.spotify.com/track/0PMhBcbq0a5EDngAlVQLAy",
+      "duration_ms": 156076,
+      "audio": null,
+      "tempo_felt": null,
+      "persona": null
+    },
+    {
+      "id": "0O6lm9N6qJclxNFHl51nkr",
+      "title": "Hoe Phase",
+      "artist": "Drake",
+      "url": "https://open.spotify.com/track/0O6lm9N6qJclxNFHl51nkr",
+      "duration_ms": 203746,
+      "audio": null,
+      "tempo_felt": null,
+      "persona": null
+    },
+    {
+      "id": "4YmS7BALpAU0h4EAF4fYuh",
+      "title": "SPEED DEMON",
+      "artist": "Justin Bieber",
+      "url": "https://open.spotify.com/track/4YmS7BALpAU0h4EAF4fYuh",
+      "duration_ms": 211960,
+      "audio": {
+        "tempo": 92.995,
+        "energy": 0.705,
+        "valence": 0.86,
+        "acousticness": 0.0872,
+        "danceability": 0.835,
+        "speechiness": 0.103,
+        "loudness": -4.526,
+        "key": 10,
+        "mode": 1
+      },
+      "tempo_felt": 93.0,
+      "persona": null
+    },
+    {
+      "id": "2dono2Koz7DEvGwxUsmMLq",
+      "title": "Linger - SiriusXM Session",
+      "artist": "Royel Otis",
+      "url": "https://open.spotify.com/track/2dono2Koz7DEvGwxUsmMLq",
+      "duration_ms": 186000,
+      "audio": {
+        "tempo": 98.217,
+        "energy": 0.393,
+        "valence": 0.403,
+        "acousticness": 0.806,
+        "danceability": 0.404,
+        "speechiness": 0.0262,
+        "loudness": -6.607,
+        "key": 2,
+        "mode": 1
+      },
+      "tempo_felt": 98.2,
+      "persona": null
+    },
+    {
+      "id": "1qPbGZqppFwLwcBC1JQ6Vr",
+      "title": "Wonderwall",
+      "artist": "Oasis",
+      "url": "https://open.spotify.com/track/1qPbGZqppFwLwcBC1JQ6Vr",
+      "duration_ms": 258906,
+      "audio": {
+        "tempo": 174.497,
+        "energy": 0.846,
+        "valence": 0.446,
+        "acousticness": 0.00228,
+        "danceability": 0.411,
+        "speechiness": 0.0367,
+        "loudness": -5.648,
+        "key": 2,
+        "mode": 1
+      },
+      "tempo_felt": 87.2,
+      "persona": null
+    },
+    {
+      "id": "4cgjA7B4fJBHyB9Ya2bu0t",
+      "title": "Human Nature",
+      "artist": "Michael Jackson",
+      "url": "https://open.spotify.com/track/4cgjA7B4fJBHyB9Ya2bu0t",
+      "duration_ms": 245837,
+      "audio": {
+        "tempo": 93.005,
+        "energy": 0.409,
+        "valence": 0.755,
+        "acousticness": 0.498,
+        "danceability": 0.628,
+        "speechiness": 0.0306,
+        "loudness": -14.348,
+        "key": 2,
+        "mode": 1
+      },
+      "tempo_felt": 93.0,
+      "persona": null
+    },
+    {
+      "id": "30VrBsh1STRBoIrhQOAwzK",
+      "title": "Disturbia",
+      "artist": "Rihanna",
+      "url": "https://open.spotify.com/track/30VrBsh1STRBoIrhQOAwzK",
+      "duration_ms": 238573,
+      "audio": {
+        "tempo": 124.921,
+        "energy": 0.814,
+        "valence": 0.717,
+        "acousticness": 0.0861,
+        "danceability": 0.707,
+        "speechiness": 0.0577,
+        "loudness": -4.509,
+        "key": 11,
+        "mode": 0
+      },
+      "tempo_felt": 124.9,
+      "persona": null
+    },
+    {
+      "id": "582EVyAFKmKPa1bVPSDurJ",
+      "title": "Two Fingers",
+      "artist": "Jake Bugg",
+      "url": "https://open.spotify.com/track/582EVyAFKmKPa1bVPSDurJ",
+      "duration_ms": 195986,
+      "audio": {
+        "tempo": 120.576,
+        "energy": 0.677,
+        "valence": 0.913,
+        "acousticness": 0.00252,
+        "danceability": 0.486,
+        "speechiness": 0.0314,
+        "loudness": -5.227,
+        "key": 5,
+        "mode": 1
+      },
+      "tempo_felt": 120.6,
+      "persona": null
+    },
+    {
+      "id": "4GXl8l1MfZPf2GvpyRPJBf",
+      "title": "pick up the phone (feat. Quavo)",
+      "artist": "Young Thug, Travis Scott, Quavo",
+      "url": "https://open.spotify.com/track/4GXl8l1MfZPf2GvpyRPJBf",
+      "duration_ms": 252262,
+      "audio": {
+        "tempo": 136.904,
+        "energy": 0.716,
+        "valence": 0.459,
+        "acousticness": 0.115,
+        "danceability": 0.706,
+        "speechiness": 0.0768,
+        "loudness": -4.263,
+        "key": 7,
+        "mode": 0
+      },
+      "tempo_felt": 136.9,
+      "persona": null
+    },
+    {
+      "id": "3a8tAZFJxlmBwOtrf5L1oC",
+      "title": "6 God",
+      "artist": "Drake",
+      "url": "https://open.spotify.com/track/3a8tAZFJxlmBwOtrf5L1oC",
+      "duration_ms": 180666,
+      "audio": {
+        "tempo": 105.446,
+        "energy": 0.623,
+        "valence": 0.498,
+        "acousticness": 0.0249,
+        "danceability": 0.868,
+        "speechiness": 0.101,
+        "loudness": -8.595,
+        "key": 2,
+        "mode": 1
+      },
+      "tempo_felt": 105.4,
+      "persona": null
+    },
+    {
+      "id": "5Ggfa9cpkpfp5D6Rg0Yyw1",
+      "title": "Come Thru",
+      "artist": "Drake",
+      "url": "https://open.spotify.com/track/5Ggfa9cpkpfp5D6Rg0Yyw1",
+      "duration_ms": 236360,
+      "audio": {
+        "tempo": 81.94,
+        "energy": 0.468,
+        "valence": 0.404,
+        "acousticness": 0.163,
+        "danceability": 0.472,
+        "speechiness": 0.184,
+        "loudness": -5.815,
+        "key": 3,
+        "mode": 1
+      },
+      "tempo_felt": 81.9,
+      "persona": null
+    },
+    {
+      "id": "2VjXGuPVVxyhMgER3Uz2Fe",
+      "title": "Ex-Factor",
+      "artist": "Ms. Lauryn Hill",
+      "url": "https://open.spotify.com/track/2VjXGuPVVxyhMgER3Uz2Fe",
+      "duration_ms": 326533,
+      "audio": {
+        "tempo": 80.02,
+        "energy": 0.619,
+        "valence": 0.668,
+        "acousticness": 0.118,
+        "danceability": 0.593,
+        "speechiness": 0.0976,
+        "loudness": -9.003,
+        "key": 3,
+        "mode": 0
+      },
+      "tempo_felt": 80.0,
+      "persona": null
+    },
+    {
+      "id": "2YiCMmONQcoMPX2bV1LxE0",
+      "title": "Everybody Wants To Rule The World",
+      "artist": "Tears For Fears",
+      "url": "https://open.spotify.com/track/2YiCMmONQcoMPX2bV1LxE0",
+      "duration_ms": 251480,
+      "audio": {
+        "tempo": 112.052,
+        "energy": 0.821,
+        "valence": 0.504,
+        "acousticness": 0.336,
+        "danceability": 0.631,
+        "speechiness": 0.0555,
+        "loudness": -11.284,
+        "key": 7,
+        "mode": 1
+      },
+      "tempo_felt": 112.1,
+      "persona": null
+    },
+    {
+      "id": "6kksmL4t09IgxhajuVDDxR",
+      "title": "late at night",
+      "artist": "Roddy Ricch",
+      "url": "https://open.spotify.com/track/6kksmL4t09IgxhajuVDDxR",
+      "duration_ms": 174549,
+      "audio": {
+        "tempo": 98.427,
+        "energy": 0.405,
+        "valence": 0.141,
+        "acousticness": 0.382,
+        "danceability": 0.621,
+        "speechiness": 0.437,
+        "loudness": -11.26,
+        "key": 1,
+        "mode": 0
+      },
+      "tempo_felt": 98.4,
+      "persona": null
+    },
+    {
+      "id": "524wvipGqxPKYWxkjf9y46",
+      "title": "Little Bit (feat. Lykke Li)",
+      "artist": "Drake, Lykke Li",
+      "url": "https://open.spotify.com/track/524wvipGqxPKYWxkjf9y46",
+      "duration_ms": 230484,
+      "audio": {
+        "tempo": 120.392,
+        "energy": 0.888,
+        "valence": 0.771,
+        "acousticness": 0.0999,
+        "danceability": 0.758,
+        "speechiness": 0.0374,
+        "loudness": -4.899,
+        "key": 11,
+        "mode": 0
+      },
+      "tempo_felt": 120.4,
+      "persona": null
+    },
+    {
+      "id": "25tXNghelZKdGZZVoSL9Yg",
+      "title": "Law Of Attraction (feat. Snoh Aalegra)",
+      "artist": "Dave, Snoh Aalegra",
+      "url": "https://open.spotify.com/track/25tXNghelZKdGZZVoSL9Yg",
+      "duration_ms": 181676,
+      "audio": {
+        "tempo": 102.78,
+        "energy": 0.513,
+        "valence": 0.51,
+        "acousticness": 0.32,
+        "danceability": 0.774,
+        "speechiness": 0.342,
+        "loudness": -8.159,
+        "key": 0,
+        "mode": 1
+      },
+      "tempo_felt": 102.8,
+      "persona": null
+    },
+    {
+      "id": "1UZOjK1BwmwWU14Erba9CZ",
+      "title": "Malibu",
+      "artist": "Miley Cyrus",
+      "url": "https://open.spotify.com/track/1UZOjK1BwmwWU14Erba9CZ",
+      "duration_ms": 231898,
+      "audio": {
+        "tempo": 139.934,
+        "energy": 0.781,
+        "valence": 0.343,
+        "acousticness": 0.0767,
+        "danceability": 0.573,
+        "speechiness": 0.0555,
+        "loudness": -6.406,
+        "key": 8,
+        "mode": 1
+      },
+      "tempo_felt": 139.9,
+      "persona": null
+    },
+    {
+      "id": "5d01AUplB1QOZY3kPrAuot",
+      "title": "UK Rap",
+      "artist": "Dave, Central Cee",
+      "url": "https://open.spotify.com/track/5d01AUplB1QOZY3kPrAuot",
+      "duration_ms": 198026,
+      "audio": {
+        "tempo": 140.065,
+        "energy": 0.674,
+        "valence": 0.726,
+        "acousticness": 0.323,
+        "danceability": 0.922,
+        "speechiness": 0.366,
+        "loudness": -4.429,
+        "key": 1,
+        "mode": 1
+      },
+      "tempo_felt": 70.0,
+      "persona": null
+    },
+    {
+      "id": "60QLLec3yKDwloXCyummPy",
+      "title": "She's Electric - Remastered",
+      "artist": "Oasis",
+      "url": "https://open.spotify.com/track/60QLLec3yKDwloXCyummPy",
+      "duration_ms": 220920,
+      "audio": {
+        "tempo": 146.66,
+        "energy": 0.55,
+        "valence": 0.21,
+        "acousticness": 0.238,
+        "danceability": 0.5,
+        "speechiness": 0.0286,
+        "loudness": -6.195,
+        "key": 9,
+        "mode": 1
+      },
+      "tempo_felt": 146.7,
+      "persona": null
+    }
+  ]
+}

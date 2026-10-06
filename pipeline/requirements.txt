@@ -1,0 +1,3 @@
+# Only needed for the optional lyrics -> persona step.
+# Everything else in build_songs.py uses the Python standard library.
+anthropic

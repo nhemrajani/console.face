@@ -30,6 +30,28 @@ console.face("Drew A Picasso")
 
 It prints a little text-art face for that song, in the song's own ink colour. Songs without data yet get a consistent face guessed from the name.
 
+## Your songs
+
+The site reads `web/data/songs.json`, which the pipeline builds from a Spotify playlist:
+
+```bash
+python3 pipeline/build_songs.py "https://open.spotify.com/playlist/0VeR8rp0x0tIKIb2bqEFpP"
+```
+
+It reads the playlist (it must be public), looks up each song's tempo, energy and mood on ReccoBeats, fixes rap and slow songs that are detected at double tempo, averages everything into the playlist's **taste** (which defines the artist), and writes `songs.json`.
+
+**To add or remove songs:** edit the playlist in Spotify, then run the command again. Songs ReccoBeats doesn't know use the playlist's average.
+
+**Lyric personas (optional):** with a Claude API key, the pipeline also reads each song's lyrics from LRCLIB and asks Claude to describe the song as a person (expression, details like a tear or a gold chain). Only that description is kept; the lyrics are never saved.
+
+```bash
+pip install -r pipeline/requirements.txt
+export ANTHROPIC_API_KEY=...   # never commit this
+python3 pipeline/build_songs.py "<playlist link>"
+```
+
+Personas you already have are kept on later runs, so you can also edit them by hand in `songs.json`.
+
 ## How it's built
 
 | File | What it does |
@@ -42,6 +64,8 @@ It prints a little text-art face for that song, in the song's own ink colour. So
 | `web/js/animate.js` | Replays a drawing stroke by stroke, timed to the song's tempo and energy. |
 | `web/js/console-face.js` | The `console.face()` easter egg: text-art faces in the browser console. |
 | `web/js/songs.js` | Songs with real data (more arrive with the song pipeline). |
+| `web/js/mapping.js` | **Song → face.** How each song's numbers pick its expression, hair, pose and accessories. `FACE_RULES` sets the strength of each rule. |
+| `pipeline/build_songs.py` | Spotify playlist → `web/data/songs.json` (audio features, felt tempo, optional lyric persona). |
 | `web/js/app.js` | The page: sketch view, sliders, grid, compare view. |
 | `samples/` | Real song profiles (audio features + lyric persona; **never lyrics**). |
 
@@ -54,9 +78,9 @@ It prints a little text-art face for that song, in the song's own ink colour. So
 
 1. ✅ Music-driven doodle style (random faces)
 2. ✅ Live sketch animation, timed to the song + `console.face()`
-3. 3D head rotation: sliders + slow turn
-4. Song pipeline: Spotify link → audio features + lyric persona
-5. Song → face mapping, explanation panel, strength sliders
+3. ✅ Song pipeline: Spotify playlist → audio features (+ lyric persona with an API key)
+4. ✅ Song → face mapping + explanation panel (strength sliders still to come)
+5. 3D head rotation: sliders + slow turn
 6. Sketchbook sheet + PNG/SVG export
 7. V2: Spotify playlist → its own art style
 8. V2: public "paste a playlist" page on neeha.xyz

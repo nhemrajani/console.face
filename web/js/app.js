@@ -1,13 +1,14 @@
 import { deriveStyle, EXAMPLE_TASTES } from "./style.js";
 import { randomFace, drawFace, FRAME } from "./face.js";
 import { animateDrawing } from "./animate.js";
-import { findSong, applyPersona } from "./songs.js";
+import { findSong, applyPersona, loadPlaylist, PLAYLIST } from "./songs.js";
+import { faceForSong } from "./mapping.js";
 import { installConsoleFace } from "./console-face.js";
 
 installConsoleFace();
 
 const SLIDERS = [
-  ["tempo", "Tempo", 50, 190, 1, (v) => `${v} BPM`],
+  ["tempo", "Tempo", 50, 190, 1, (v) => `${Math.round(v)} BPM`],
   ["energy", "Energy", 0, 1, 0.01],
   ["valence", "Mood (sad → happy)", 0, 1, 0.01],
   ["acousticness", "Acoustic", 0, 1, 0.01],
@@ -16,23 +17,29 @@ const SLIDERS = [
   ["variety", "Variety between songs", 0, 1, 0.01],
 ];
 
+const MINE = "My playlist";
+let tastes = { ...EXAMPLE_TASTES };
 let presetName = "Drew A Picasso (real)";
-let taste = { ...EXAMPLE_TASTES[presetName] };
+let taste = { ...tastes[presetName] };
 let batch = 0;
 let view = "sketch";
-let sketchSeed = null; // null = the song's own face (for the real song) or sitter 0
+let sketchSeed = null; // a random sitter chosen from the grid
+let songIndex = 0; // which playlist song the sketch shows
 let anim = null;
 
 const $ = (s) => document.querySelector(s);
+const usingPlaylist = () => PLAYLIST && presetName === MINE;
+const songs = () => PLAYLIST?.songs ?? [];
 
 function buildControls() {
   const chips = $("#presets");
-  for (const name of Object.keys(EXAMPLE_TASTES)) {
+  chips.innerHTML = "";
+  for (const name of Object.keys(tastes)) {
     const b = document.createElement("button");
     b.textContent = name;
     b.onclick = () => {
       presetName = name;
-      taste = { ...EXAMPLE_TASTES[name] };
+      taste = { ...tastes[name] };
       sketchSeed = null;
       syncSliders();
       render();
@@ -47,7 +54,7 @@ function buildControls() {
     const input = wrap.querySelector("input");
     input.oninput = () => {
       taste[key] = parseFloat(input.value);
-      presetName = null;
+      if (!usingPlaylist()) presetName = null; // moving sliders on your playlist keeps its songs
       syncSliders(false);
       scheduleRender();
     };
@@ -59,17 +66,21 @@ function buildControls() {
     render();
   };
   $("#redraw").onclick = () => renderSketch();
-  $("#speed").oninput = () => {
-    $("#speed-val").textContent = $("#speed").value + "×";
-  };
+  $("#speed").oninput = () => ($("#speed-val").textContent = $("#speed").value + "×");
   $("#speed").onchange = () => renderSketch();
-  document.querySelectorAll(".tabs button").forEach((b) => {
-    b.onclick = () => setView(b.dataset.view);
-  });
+  $("#song").onchange = () => {
+    songIndex = parseInt($("#song").value, 10);
+    sketchSeed = null;
+    renderSketch();
+  };
+  document.querySelectorAll(".tabs button").forEach((b) => (b.onclick = () => setView(b.dataset.view)));
   $("#grid").onclick = (e) => {
-    const cell = e.target.closest("[data-seed]");
+    const cell = e.target.closest("[data-seed], [data-song]");
     if (!cell) return;
-    sketchSeed = cell.dataset.seed;
+    if (cell.dataset.song) {
+      songIndex = parseInt(cell.dataset.song, 10);
+      sketchSeed = null;
+    } else sketchSeed = cell.dataset.seed;
     setView("sketch");
   };
   syncSliders();
@@ -96,58 +107,97 @@ function scheduleRender() {
   timer = setTimeout(render, view === "sketch" ? 250 : 60);
 }
 
-function faceSVG(seed, style) {
-  const dr = drawFace(randomFace(seed, style), style);
-  return dr.toSVG({ width: FRAME.width, height: FRAME.height });
-}
+const svgOf = (dr) => dr.toSVG({ width: FRAME.width, height: FRAME.height });
 
 function render() {
   const style = deriveStyle(taste);
   renderExplain(style);
+  $("#sheet-tab").textContent = usingPlaylist() ? "Sheet" : "Sitters";
+  $("#song").hidden = !usingPlaylist();
+  $(".auto").hidden = !usingPlaylist();
   $("#sketch").hidden = view !== "sketch";
   $("#grid").hidden = view !== "one";
   $("#compare").hidden = view !== "compare";
-  if (view !== "sketch") anim?.stop();
+  if (view !== "sketch") {
+    anim?.stop();
+    $("#song-why-box").hidden = true;
+  }
   if (view === "sketch") renderSketch();
   else if (view === "one") {
-    const names = ["Ana", "Ben", "Cleo", "Dev", "Eli", "Fay"];
-    $("#grid").innerHTML = names
-      .map((n, i) => `<div class="face" data-seed="${batch}-${i}" title="Watch it being drawn">${faceSVG(`${batch}-${i}`, style)}<div class="cap">sitter ${n}</div></div>`)
-      .join("");
+    if (usingPlaylist()) {
+      // the sketchbook page: every song in your playlist, by the same artist
+      $("#grid").innerHTML = songs()
+        .map((s, i) => `<div class="face" data-song="${i}" title="Watch it being drawn">${svgOf(drawFace(faceForSong(s, style, taste).face, style))}<div class="cap">${shortTitle(s.title)}<small>${s.artist.split(",")[0]}</small></div></div>`)
+        .join("");
+    } else {
+      const names = ["Ana", "Ben", "Cleo", "Dev", "Eli", "Fay"];
+      $("#grid").innerHTML = names.map((n, i) => `<div class="face" data-seed="${batch}-${i}" title="Watch it being drawn">${svgOf(drawFace(randomFace(`${batch}-${i}`, style), style))}<div class="cap">sitter ${n}</div></div>`).join("");
+    }
   } else {
-    $("#compare").innerHTML = Object.entries(EXAMPLE_TASTES)
+    $("#compare").innerHTML = Object.entries(tastes)
       .map(([name, t]) => {
         const st = deriveStyle(t);
-        const cells = [0, 1, 2, 3].map((i) => `<div>${faceSVG(`${batch}-${i}`, st)}</div>`).join("");
+        const cells = [0, 1, 2, 3].map((i) => `<div>${svgOf(drawFace(randomFace(`${batch}-${i}`, st), st))}</div>`).join("");
         return `<div class="row"><div class="name">${name}<small>${st.pen}</small></div>${cells}</div>`;
       })
       .join("");
   }
 }
 
-// The live sketch: the face is drawn stroke by stroke in time with the music.
+const shortTitle = (t) => t.replace(/\s*\(.*$|\s+-\s.*$/, ""); // drop "(feat. ...)" and " - Remastered"
+
+// The live sketch: a face drawn stroke by stroke in time with the music.
 function renderSketch() {
   anim?.stop();
   const style = deriveStyle(taste);
-  const song = presetName === "Drew A Picasso (real)" ? findSong("Drew A Picasso") : null;
-  let face;
-  if (song && !sketchSeed) face = applyPersona(randomFace("song:drew a picasso", style), song.persona);
-  else face = randomFace(sketchSeed ?? `${batch}-0`, style);
-  const dr = drawFace(face, style);
-  const speed = parseFloat($("#speed").value);
-  $("#bpm").textContent = `${Math.round(taste.tempo)} BPM` + (song && !sketchSeed ? ` · ${song.title}` : "");
+  let face, timing, label, why = null;
+  if (usingPlaylist() && !sketchSeed) {
+    const song = songs()[songIndex];
+    const out = faceForSong(song, style, taste);
+    face = out.face;
+    timing = out.audio; // the song itself sets the rhythm
+    why = out.why;
+    label = `${shortTitle(song.title)}<small>${song.artist} · ${Math.round(out.audio.tempo)} BPM</small>`;
+  } else if (presetName === "Drew A Picasso (real)" && !sketchSeed) {
+    const song = findSong("Drew A Picasso");
+    face = applyPersona(randomFace("song:drew a picasso", style), song.persona);
+    label = `${song.title}<small>${song.artist} · ${Math.round(taste.tempo)} BPM</small>`;
+  } else {
+    face = randomFace(sketchSeed ?? `${batch}-0`, style);
+    label = "";
+  }
+  $("#now").innerHTML = label;
+  $("#bpm").textContent = `${Math.round((timing ?? taste).tempo)} BPM`;
+  renderSongWhy(why);
   const metro = $("#metro");
   metro.style.background = style.accent;
-  anim = animateDrawing($("#sketch-svg"), dr, style, {
+  anim = animateDrawing($("#sketch-svg"), drawFace(face, style), style, {
     width: FRAME.width,
     height: FRAME.height,
-    speed,
+    speed: parseFloat($("#speed").value),
+    timing,
     onBeat: () => {
       metro.classList.remove("tick");
       void metro.offsetWidth; // restart the CSS pulse
       metro.classList.add("tick");
     },
+    onDone: () => {
+      // sketchbook mode: turn the page and draw the next song
+      if (usingPlaylist() && $("#autoplay").checked && view === "sketch") {
+        setTimeout(() => {
+          if (!$("#autoplay").checked || view !== "sketch") return;
+          songIndex = (songIndex + 1) % songs().length;
+          $("#song").value = songIndex;
+          renderSketch();
+        }, 1800);
+      }
+    },
   });
+}
+
+function renderSongWhy(why) {
+  $("#song-why-box").hidden = !why;
+  if (why) $("#song-why").innerHTML = why.map(([k, v]) => `<div class="why"><b>${k}</b><span>${v}</span></div>`).join("");
 }
 
 function renderExplain(style) {
@@ -161,5 +211,18 @@ function renderExplain(style) {
     .join("");
 }
 
-buildControls();
-render();
+async function start() {
+  const data = await loadPlaylist();
+  if (data) {
+    // your playlist becomes the first (and default) artist
+    tastes = { [MINE]: data.playlist.taste, ...EXAMPLE_TASTES };
+    presetName = MINE;
+    taste = { ...data.playlist.taste };
+    $("#song").innerHTML = data.songs.map((s, i) => `<option value="${i}">${shortTitle(s.title)} · ${s.artist.split(",")[0]}</option>`).join("");
+    $(".hint").textContent = `"${data.playlist.name}" by ${data.playlist.owner}: ${data.songs.length} songs. The other examples are made-up tastes.`;
+  }
+  buildControls();
+  render();
+}
+
+start();

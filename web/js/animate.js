@@ -20,14 +20,15 @@ const SKETCH_ORDER = ["construction", "head", "ears", "eyes", "brows", "nose", "
 const PHASE = (it) => (it.kind === "fill" && it.fill === "paper" ? 0 : it.kind === "stroke" || it.kind === "dot" ? 1 : it.kind === "fill" ? 2 : 3);
 
 // Work out when every mark starts and how long it takes. Times in seconds.
-export function buildTimeline(drawing, style) {
-  const taste = style.taste;
+// `timing` is the song being drawn ({ tempo, energy }); defaults to the artist's taste.
+export function buildTimeline(drawing, style, timing = style.taste) {
+  const taste = timing;
   const t = clamp((taste.tempo - 60) / 120);
   const E = clamp(taste.energy);
   const beat = 60 / taste.tempo;
   const unit = E > 0.6 ? beat / 2 : beat; // energetic songs: start on half-beats too
   let lift = lerp(0.14, 0.02, t) * lerp(1.2, 0.6, E); // pause when the pen lifts
-  const r = makeRng("timeline:" + taste.tempo);
+  const r = makeRng("timeline:" + taste.tempo + ":" + drawing.items.length);
 
   const order = drawing.items
     .map((it, i) => ({ it, i, g: Math.max(0, SKETCH_ORDER.indexOf(it.group)), p: PHASE(it) }))
@@ -73,8 +74,8 @@ export function buildTimeline(drawing, style) {
 }
 
 // Draw `drawing` into `svg` over time. Returns { stop, duration }.
-export function animateDrawing(svg, drawing, style, { width, height, speed = 1, onBeat, onDone } = {}) {
-  const { events, duration, beat } = buildTimeline(drawing, style);
+export function animateDrawing(svg, drawing, style, { width, height, speed = 1, timing, onBeat, onDone } = {}) {
+  const { events, duration, beat } = buildTimeline(drawing, style, timing);
   svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
   svg.innerHTML = "";
   const bg = document.createElementNS(NS, "rect");

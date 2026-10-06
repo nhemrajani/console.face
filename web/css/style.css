@@ -120,3 +120,14 @@ button.primary:hover { background: var(--ink); color: var(--paper); }
 .sketch-bar button:hover { background: var(--ink); color: var(--paper); }
 .speed { display: flex; align-items: center; gap: 6px; color: var(--muted); }
 .speed input { width: 90px; accent-color: var(--ink); }
+
+.now { font-family: var(--hand); font-size: 28px; text-align: center; min-height: 34px; line-height: 1.1; }
+.now small { display: block; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+.sketch-bar select { font: inherit; border: 1px solid var(--line); border-radius: 8px; padding: 4px 6px; max-width: 200px; background: var(--paper); color: var(--ink); }
+.auto { display: flex; align-items: center; gap: 4px; color: var(--muted); }
+.gap-first { margin-top: 0; }
+#song-why-box + .gap-first { margin-top: 22px; }
+.why { display: grid; grid-template-columns: 96px 1fr; gap: 6px; font-size: 12px; padding: 6px 0; border-bottom: 1px solid var(--line); }
+.why b { font-weight: 600; }
+.why span { color: #444; }
+.face .cap small { display: block; font-family: var(--ui); font-size: 10px; color: var(--muted); margin-top: -2px; }

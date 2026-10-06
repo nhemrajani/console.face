@@ -18,11 +18,33 @@ export const KNOWN_SONGS = [
   },
 ];
 
+// Filled in by loadPlaylist() from data/songs.json (written by pipeline/build_songs.py)
+export let PLAYLIST = null;
+
+export async function loadPlaylist() {
+  try {
+    const res = await fetch("data/songs.json", { cache: "no-store" });
+    if (res.ok) PLAYLIST = await res.json();
+  } catch {
+    PLAYLIST = null;
+  }
+  return PLAYLIST;
+}
+
 export const normalise = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 
+const matches = (q, s) => {
+  const title = normalise(s.title.replace(/\s*\(.*$|\s+-\s.*$/, "")); // ignore "(feat. ...)" and " - Remastered"
+  const artist = normalise(s.artist.split(",")[0]);
+  return [normalise(s.title), title, `${title} ${artist}`, `${artist} ${title}`].includes(q);
+};
+
+// Look a song up by name: first your playlist, then the hand-made samples.
 export function findSong(name) {
   const q = normalise(name);
-  return KNOWN_SONGS.find((s) => normalise(s.title) === q || normalise(`${s.title} ${s.artist}`) === q || normalise(`${s.artist} ${s.title}`) === q) ?? null;
+  const fromPlaylist = PLAYLIST?.songs.find((s) => matches(q, s));
+  if (fromPlaylist) return { ...fromPlaylist, fromPlaylist: true };
+  return KNOWN_SONGS.find((s) => matches(q, s)) ?? null;
 }
 
 // For songs we don't know yet: a made-up but consistent taste from the name,

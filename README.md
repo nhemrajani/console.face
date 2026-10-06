@@ -16,13 +16,17 @@ python3 serve.py
 
 Then open http://localhost:8123.
 
+**The start page** asks for a Spotify playlist link. Paste any public playlist and press Enter: the local server runs the song pipeline live, and you land on a sketchbook page where every song's face draws itself at its own tempo. Click a face to watch it drawn big. (Songs already in `web/data/songs.json` load instantly and keep their lyric personas.)
+
+**The lab** (http://localhost:8123/lab.html, or the faint "lab" link in the corner) is the tool for tuning the style:
+
 - **Sketch** watches a face being drawn live. The song sets the rhythm: each part of the face starts on a beat, slow songs draw in long unhurried lines, fast songs in scribbly bursts.
 - **Sitters** shows six faces in the current style (click one to watch it drawn).
 - **Compare tastes** shows the same four people drawn by eight different "artists".
 
 ### Filming a demo
 
-Press **P** (or open http://localhost:8123/?present) for presentation mode: just the drawing, each song drawn after the other at its own tempo. **Esc** exits. To make it quicker, set the speed slider before pressing P.
+In the lab, press **P** (or open http://localhost:8123/lab.html?present) for presentation mode: just the drawing, each song drawn after the other at its own tempo. **Esc** exits. To make it quicker, set the speed slider before pressing P.
 
 ### The hidden one
 
@@ -70,7 +74,9 @@ Personas you already have are kept on later runs, so you can also edit them by h
 | `web/js/songs.js` | Songs with real data (more arrive with the song pipeline). |
 | `web/js/mapping.js` | **Song → face.** How each song's numbers pick its expression, hair, pose and accessories. `FACE_RULES` sets the strength of each rule. |
 | `pipeline/build_songs.py` | Spotify playlist → `web/data/songs.json` (audio features, felt tempo, optional lyric persona). |
-| `web/js/app.js` | The page: sketch view, sliders, grid, compare view. |
+| `web/js/show.js` | The start page → loading → self-drawing sketchbook flow (`index.html`). |
+| `web/js/app.js` | The lab (`lab.html`): sketch view, sliders, sheet, compare view. |
+| `serve.py` | Local server; `/api/playlist?url=…` runs the pipeline live for the start page. |
 | `samples/` | Real song profiles (audio features + lyric persona; **never lyrics**). |
 
 ## Data rules

@@ -50,7 +50,7 @@ def spotify_id(link, kind):
     """Pull the ID out of a Spotify link, e.g. .../playlist/0VeR8rp0x0tIKIb2bqEFpP?si=... -> 0VeR8rp0x0tIKIb2bqEFpP"""
     match = re.search(rf"{kind}/([A-Za-z0-9]+)", link)
     if not match:
-        sys.exit(f"That doesn't look like a Spotify {kind} link: {link}")
+        raise ValueError(f"That doesn't look like a Spotify {kind} link.")
     return match.group(1)
 
 
@@ -68,7 +68,7 @@ def read_playlist(playlist_id):
     html = get(f"https://open.spotify.com/embed/playlist/{playlist_id}")
     match = re.search(r'<script id="__NEXT_DATA__" type="application/json">(.*?)</script>', html, re.S)
     if not match:
-        sys.exit("Couldn't find the track list on Spotify's embed page. Is the playlist public?")
+        raise ValueError("Couldn't read that playlist. Is it public?")
     entity = json.loads(match.group(1))["props"]["pageProps"]["state"]["data"]["entity"]
     tracks = []
     for t in entity["trackList"]:
@@ -244,60 +244,75 @@ def playlist_taste(songs):
 # Put it all together
 # ---------------------------------------------------------------------------
 
-def main():
-    if len(sys.argv) < 2:
-        sys.exit('Usage: python3 pipeline/build_songs.py "<spotify playlist link>"')
-    link = sys.argv[1]
-
-    print("1. Reading playlist...")
+def build(link, use_claude=True, log=print, reuse=False):
+    """
+    Run steps 1-5 for a playlist link and return the data (doesn't write anything).
+    reuse=True skips looking up songs that songs.json already has (fast, for the live page).
+    """
+    log("1. Reading playlist...")
     playlist = read_playlist(spotify_id(link, "playlist"))
     tracks = playlist["tracks"]
-    print(f"   {playlist['name']} by {playlist['owner']}: {len(tracks)} tracks")
+    log(f"   {playlist['name']} by {playlist['owner']}: {len(tracks)} tracks")
 
-    print("2. Fetching audio features from ReccoBeats...")
-    features = audio_features([t["id"] for t in tracks])
+    known = {}
+    if reuse and OUT.exists():
+        known = {s["id"]: s for s in json.loads(OUT.read_text()).get("songs", [])}
+
+    log("2. Fetching audio features from ReccoBeats...")
+    features = {k: v["audio"] for k, v in known.items() if v.get("audio")}
+    new_ids = [t["id"] for t in tracks if t["id"] not in known]
+    if new_ids:
+        features.update(audio_features(new_ids))
     for t in tracks:
-        if t["id"] not in features:
+        if t["id"] not in features and t["id"] not in known:
             found = search_features(t["title"], t["artist"])
             if found:
                 features[t["id"]] = found
-                print(f"   found {t['title']} by searching")
+                log(f"   found {t['title']} by searching")
     missing = [t for t in tracks if t["id"] not in features]
-    print(f"   audio data for {len(tracks) - len(missing)}/{len(tracks)} songs")
+    log(f"   audio data for {len(tracks) - len(missing)}/{len(tracks)} songs")
     for t in missing:
-        print(f"   - none for {t['title']} ({t['artist']}): its face will use the playlist average")
+        log(f"   - none for {t['title']} ({t['artist']}): its face will use the playlist average")
 
-    print("3. Working out felt tempo...")
+    log("3. Working out felt tempo...")
     songs = []
     for t in tracks:
         f = features.get(t["id"])
         song = {**t, "audio": f, "tempo_felt": felt_tempo(f) if f else None, "persona": None}
         if f and song["tempo_felt"] != round(f["tempo"], 1):
-            print(f"   {t['title']}: {f['tempo']:.0f} → {song['tempo_felt']:.0f} BPM (half-time)")
+            log(f"   {t['title']}: {f['tempo']:.0f} → {song['tempo_felt']:.0f} BPM (half-time)")
         songs.append(song)
 
-    print("4. Lyric personas...")
+    log("4. Lyric personas...")
     # keep personas you already have (and any you edited by hand) from the last run
     previous = {}
     if OUT.exists():
         previous = {s["id"]: s.get("persona") for s in json.loads(OUT.read_text()).get("songs", [])}
-    client = persona_client()
+    client = persona_client() if use_claude else None
     for song in songs:
         if previous.get(song["id"]):
             song["persona"] = previous[song["id"]]
         elif client:
             song["persona"] = make_persona(client, song)
-            print(f"   {song['title']}: {song['persona']['summary'] if song['persona'] else '(no lyrics found)'}")
+            log(f"   {song['title']}: {song['persona']['summary'] if song['persona'] else '(no lyrics found)'}")
 
-    print("5. Averaging the playlist's taste...")
+    log("5. Averaging the playlist's taste...")
+    if not any(s["audio"] for s in songs):
+        raise ValueError("None of these songs have audio data, so there's no taste to draw from.")
     taste = playlist_taste(songs)
-    print("   " + ", ".join(f"{k} {v}" for k, v in taste.items()))
-
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    OUT.write_text(json.dumps({
+    log("   " + ", ".join(f"{k} {v}" for k, v in taste.items()))
+    return {
         "playlist": {"name": playlist["name"], "owner": playlist["owner"], "url": link.split("?")[0], "taste": taste},
         "songs": songs,
-    }, indent=2, ensure_ascii=False))
+    }
+
+
+def main():
+    if len(sys.argv) < 2:
+        sys.exit('Usage: python3 pipeline/build_songs.py "<spotify playlist link>"')
+    data = build(sys.argv[1])
+    OUT.parent.mkdir(parents=True, exist_ok=True)
+    OUT.write_text(json.dumps(data, indent=2, ensure_ascii=False))
     print(f"6. Wrote {OUT.relative_to(ROOT)}")
 
 

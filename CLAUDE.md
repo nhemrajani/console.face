@@ -75,7 +75,8 @@ Song picker with a large face, yaw/pitch/roll sliders, "turn slowly"; side panel
 - Song pipeline done: `pipeline/build_songs.py <playlist>` → `web/data/songs.json` (user's playlist "console.faces()", 25 songs, 21 with audio). ReccoBeats by Spotify ID, then title search fallback. Felt-tempo halving for rap/laid-back ≥115 BPM and strummed ≥160 BPM with low danceability.
 - Personas for the 25 playlist songs were written by Claude in chat (marked `"source": "written by Claude in chat"` in songs.json) so the user can film a demo without an API key. The pipeline keeps existing personas on rerun. Automatic personas still need a Claude API key (none on this machine yet).
 - Persona details → face via `DETAIL_RULES` in `web/js/songs.js` (looking up/down, eyes closed, big grin, glasses, hairstyles...).
-- Presentation mode for filming: press P or open `?present` (Esc exits); autoplays the playlist. Uses the `anthropic` SDK, claude-opus-5-5, effort low, structured JSON output, server-side fallbacks.
+- `index.html` is now the demo flow (start page with playlist box → loading lines → self-drawing sketchbook grid, `web/js/show.js`); the old tool lives at `lab.html`. `serve.py` exposes `/api/playlist?url=` (pipeline `build(..., reuse=True)`, ~0.3s for known songs). On a static host, show.js falls back to `data/songs.json` if the link matches.
+- Lab presentation mode: press P or open `?present` (Esc exits); autoplays the playlist. Uses the `anthropic` SDK, claude-opus-5-5, effort low, structured JSON output, server-side fallbacks.
 - Song → face mapping in `web/js/mapping.js` (`FACE_RULES`). Sketch view: song picker, per-song tempo, "play the playlist" autoplay. Sheet tab: all songs with handwritten titles.
 - Next: lyric personas (needs key), head rotation, strength sliders, export.
 - Known gap for M2: nose doesn't extend the head silhouette at strong yaw (|yaw| > ~0.6).

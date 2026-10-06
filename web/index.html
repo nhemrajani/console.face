@@ -6,60 +6,49 @@
   <title>console.face()</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/show.css" />
 </head>
 <body>
-  <header>
+  <!-- 1. start: paste a playlist -->
+  <section id="start" class="screen">
     <h1>console.face()</h1>
-    <p class="sub">Music in, faces out. The song decides how the pen moves.</p>
-    <nav class="tabs">
-      <button data-view="sketch" class="active">Sketch</button>
-      <button data-view="one" id="sheet-tab">Sitters</button>
-      <button data-view="compare">Compare tastes</button>
-      <button id="present" class="present-btn" title="Presentation mode (P)">Present ▶</button>
-    </nav>
-  </header>
+    <p class="tag">paste a playlist. get a sketchbook.</p>
+    <form id="form" autocomplete="off">
+      <input id="link" type="url" placeholder="https://open.spotify.com/playlist/…" aria-label="Spotify playlist link" spellcheck="false" />
+      <button type="submit" aria-label="Draw">draw →</button>
+    </form>
+    <p class="error" id="error" role="alert"></p>
+  </section>
 
-  <main>
-    <aside class="controls">
-      <h2>Music taste</h2>
-      <p class="hint">Examples are made up until real song data arrives, except the Drake one.</p>
-      <div id="presets" class="chips"></div>
-      <div id="sliders"></div>
-      <button id="reroll" class="primary">New faces</button>
-    </aside>
+  <!-- 2. loading -->
+  <section id="loading" class="screen" hidden>
+    <div class="pencil"><span></span></div>
+    <p id="status"></p>
+  </section>
 
-    <section id="stage">
-      <div id="sketch" class="sketch">
-        <div class="now" id="now"></div>
-        <svg id="sketch-svg" role="img" aria-label="A face being sketched"></svg>
-        <div class="sketch-bar">
-          <span class="metro" id="metro"></span>
-          <span id="bpm" class="bpm"></span>
-          <select id="song" aria-label="Song"></select>
-          <button id="redraw">Draw again</button>
-          <label class="auto"><input type="checkbox" id="autoplay" /> play the playlist</label>
-          <label class="speed">speed <input type="range" id="speed" min="0.5" max="4" step="0.25" value="1" /><span id="speed-val">1×</span></label>
-        </div>
+  <!-- 3. the sketchbook -->
+  <section id="show" hidden>
+    <header class="book-head">
+      <div>
+        <h2 id="pl-name"></h2>
+        <p id="pl-meta"></p>
       </div>
-      <div id="grid" class="grid" hidden></div>
-      <div id="compare" class="compare" hidden></div>
-    </section>
+      <div class="artist" id="artist"></div>
+    </header>
+    <div id="book" class="book"></div>
+  </section>
 
-    <aside class="explain">
-      <div id="song-why-box" hidden>
-        <h2>This song → this face</h2>
-        <div id="song-why"></div>
-      </div>
-      <h2 class="gap-first">The artist this music makes</h2>
-      <div id="artist"></div>
-      <h2 class="gap">Music → style</h2>
-      <div id="mapping"></div>
-    </aside>
-  </main>
+  <!-- one face, big -->
+  <div id="big" class="big" hidden>
+    <button class="close" id="close" aria-label="Close">×</button>
+    <div class="big-inner">
+      <div class="big-title" id="big-title"></div>
+      <svg id="big-svg"></svg>
+    </div>
+  </div>
 
-  <div class="wordmark">console.face()<span id="wm-sub"></span></div>
-  <script type="module" src="js/app.js"></script>
+  <a class="lab-link" href="lab.html">lab</a>
+  <script type="module" src="js/show.js"></script>
 </body>
 </html>

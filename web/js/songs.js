@@ -21,6 +21,11 @@ export const KNOWN_SONGS = [
 // Filled in by loadPlaylist() from data/songs.json (written by pipeline/build_songs.py)
 export let PLAYLIST = null;
 
+// Use playlist data that came from somewhere else (e.g. the start page's live lookup).
+export function setPlaylist(data) {
+  PLAYLIST = data;
+}
+
 export async function loadPlaylist() {
   try {
     const res = await fetch("data/songs.json", { cache: "no-store" });

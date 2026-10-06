@@ -1,0 +1,13 @@
+# Audio stays local (copyrighted)
+audio/*
+!audio/.gitkeep
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# OS / editor
+.DS_Store
+.vscode/
+exports/

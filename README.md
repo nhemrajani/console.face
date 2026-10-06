@@ -1,10 +1,8 @@
-# untitled
-
-*(working title — name to be decided)*
+# console.face()
 
 Turns music taste into art. The music decides **how** faces are drawn (the artist's pen, shaky or calm hand, shading, proportions), and each song becomes **a person** drawn in that style. Faces are sketchy ink doodles on a plain white page.
 
-🚧 Work in progress: currently at **Milestone 1** (the music-driven drawing style, with random faces).
+🚧 Work in progress. Done so far: the music-driven drawing style, and live sketching timed to the song.
 
 Every portrait is generated entirely in JavaScript: no images, no AI image models.
 
@@ -16,7 +14,21 @@ You need Python 3 (already on macOS).
 python3 serve.py
 ```
 
-Then open http://localhost:8123. Move the music sliders (or pick an example taste) and watch the drawing style change. **Compare tastes** shows the same four people drawn by eight different "artists".
+Then open http://localhost:8123.
+
+- **Sketch** watches a face being drawn live. The song sets the rhythm: each part of the face starts on a beat, slow songs draw in long unhurried lines, fast songs in scribbly bursts.
+- **Sitters** shows six faces in the current style (click one to watch it drawn).
+- **Compare tastes** shows the same four people drawn by eight different "artists".
+
+### The hidden one
+
+Open the browser console and type:
+
+```js
+console.face("Drew A Picasso")
+```
+
+It prints a little text-art face for that song, in the song's own ink colour. Songs without data yet get a consistent face guessed from the name.
 
 ## How it's built
 
@@ -27,7 +39,10 @@ Then open http://localhost:8123. Move the music sliders (or pick an example tast
 | `web/js/head.js` | The invisible 3D head and camera, so features foreshorten when the head turns. |
 | `web/js/ink.js` | Hand-drawn strokes: wobble, shake, pressure, overshoot, re-traced lines, hatching. |
 | `web/js/mask.js` | Finds clean outlines (head, hair) from the 3D shapes. |
-| `web/js/app.js` | The page: sliders, grid, compare view. |
+| `web/js/animate.js` | Replays a drawing stroke by stroke, timed to the song's tempo and energy. |
+| `web/js/console-face.js` | The `console.face()` easter egg: text-art faces in the browser console. |
+| `web/js/songs.js` | Songs with real data (more arrive with the song pipeline). |
+| `web/js/app.js` | The page: sketch view, sliders, grid, compare view. |
 | `samples/` | Real song profiles (audio features + lyric persona; **never lyrics**). |
 
 ## Data rules
@@ -38,8 +53,8 @@ Then open http://localhost:8123. Move the music sliders (or pick an example tast
 ## Roadmap
 
 1. ✅ Music-driven doodle style (random faces)
-2. 3D head rotation: sliders + slow turn
-3. Live sketch animation
+2. ✅ Live sketch animation, timed to the song + `console.face()`
+3. 3D head rotation: sliders + slow turn
 4. Song pipeline: Spotify link → audio features + lyric persona
 5. Song → face mapping, explanation panel, strength sliders
 6. Sketchbook sheet + PNG/SVG export

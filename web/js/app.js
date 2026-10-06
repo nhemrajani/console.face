@@ -1,5 +1,10 @@
 import { deriveStyle, EXAMPLE_TASTES } from "./style.js";
 import { randomFace, drawFace, FRAME } from "./face.js";
+import { animateDrawing } from "./animate.js";
+import { findSong, applyPersona } from "./songs.js";
+import { installConsoleFace } from "./console-face.js";
+
+installConsoleFace();
 
 const SLIDERS = [
   ["tempo", "Tempo", 50, 190, 1, (v) => `${v} BPM`],
@@ -14,7 +19,9 @@ const SLIDERS = [
 let presetName = "Drew A Picasso (real)";
 let taste = { ...EXAMPLE_TASTES[presetName] };
 let batch = 0;
-let view = "one";
+let view = "sketch";
+let sketchSeed = null; // null = the song's own face (for the real song) or sitter 0
+let anim = null;
 
 const $ = (s) => document.querySelector(s);
 
@@ -26,13 +33,14 @@ function buildControls() {
     b.onclick = () => {
       presetName = name;
       taste = { ...EXAMPLE_TASTES[name] };
+      sketchSeed = null;
       syncSliders();
       render();
     };
     chips.appendChild(b);
   }
   const box = $("#sliders");
-  for (const [key, label, min, max, step, fmt] of SLIDERS) {
+  for (const [key, label, min, max, step] of SLIDERS) {
     const wrap = document.createElement("div");
     wrap.className = "slider";
     wrap.innerHTML = `<label><span>${label}</span><span data-val="${key}"></span></label><input type="range" min="${min}" max="${max}" step="${step}" data-key="${key}">`;
@@ -47,16 +55,30 @@ function buildControls() {
   }
   $("#reroll").onclick = () => {
     batch++;
+    sketchSeed = `${batch}-0`;
     render();
   };
+  $("#redraw").onclick = () => renderSketch();
+  $("#speed").oninput = () => {
+    $("#speed-val").textContent = $("#speed").value + "×";
+  };
+  $("#speed").onchange = () => renderSketch();
   document.querySelectorAll(".tabs button").forEach((b) => {
-    b.onclick = () => {
-      view = b.dataset.view;
-      document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("active", x === b));
-      render();
-    };
+    b.onclick = () => setView(b.dataset.view);
   });
+  $("#grid").onclick = (e) => {
+    const cell = e.target.closest("[data-seed]");
+    if (!cell) return;
+    sketchSeed = cell.dataset.seed;
+    setView("sketch");
+  };
   syncSliders();
+}
+
+function setView(v) {
+  view = v;
+  document.querySelectorAll(".tabs button").forEach((x) => x.classList.toggle("active", x.dataset.view === v));
+  render();
 }
 
 function syncSliders(setInputs = true) {
@@ -71,24 +93,26 @@ function syncSliders(setInputs = true) {
 let timer = null;
 function scheduleRender() {
   clearTimeout(timer);
-  timer = setTimeout(render, 60);
+  timer = setTimeout(render, view === "sketch" ? 250 : 60);
 }
 
 function faceSVG(seed, style) {
-  const face = randomFace(seed, style);
-  const dr = drawFace(face, style);
+  const dr = drawFace(randomFace(seed, style), style);
   return dr.toSVG({ width: FRAME.width, height: FRAME.height });
 }
 
 function render() {
   const style = deriveStyle(taste);
   renderExplain(style);
+  $("#sketch").hidden = view !== "sketch";
   $("#grid").hidden = view !== "one";
   $("#compare").hidden = view !== "compare";
-  if (view === "one") {
+  if (view !== "sketch") anim?.stop();
+  if (view === "sketch") renderSketch();
+  else if (view === "one") {
     const names = ["Ana", "Ben", "Cleo", "Dev", "Eli", "Fay"];
     $("#grid").innerHTML = names
-      .map((n, i) => `<div class="face">${faceSVG(`${batch}-${i}`, style)}<div class="cap">sitter ${n}</div></div>`)
+      .map((n, i) => `<div class="face" data-seed="${batch}-${i}" title="Watch it being drawn">${faceSVG(`${batch}-${i}`, style)}<div class="cap">sitter ${n}</div></div>`)
       .join("");
   } else {
     $("#compare").innerHTML = Object.entries(EXAMPLE_TASTES)
@@ -99,6 +123,31 @@ function render() {
       })
       .join("");
   }
+}
+
+// The live sketch: the face is drawn stroke by stroke in time with the music.
+function renderSketch() {
+  anim?.stop();
+  const style = deriveStyle(taste);
+  const song = presetName === "Drew A Picasso (real)" ? findSong("Drew A Picasso") : null;
+  let face;
+  if (song && !sketchSeed) face = applyPersona(randomFace("song:drew a picasso", style), song.persona);
+  else face = randomFace(sketchSeed ?? `${batch}-0`, style);
+  const dr = drawFace(face, style);
+  const speed = parseFloat($("#speed").value);
+  $("#bpm").textContent = `${Math.round(taste.tempo)} BPM` + (song && !sketchSeed ? ` · ${song.title}` : "");
+  const metro = $("#metro");
+  metro.style.background = style.accent;
+  anim = animateDrawing($("#sketch-svg"), dr, style, {
+    width: FRAME.width,
+    height: FRAME.height,
+    speed,
+    onBeat: () => {
+      metro.classList.remove("tick");
+      void metro.offsetWidth; // restart the CSS pulse
+      metro.classList.add("tick");
+    },
+  });
 }
 
 function renderExplain(style) {

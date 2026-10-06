@@ -1,6 +1,6 @@
-# untitled (working title)
+# console.face()
 
-The user dislikes the name "Song Faces": never show it in the UI, page titles, or docs. Repo/folder are still named `song-faces` until a new name is chosen.
+The project is called **console.face()** (a play on `console.log`). Never use the old name "Song Faces". Hidden feature: typing `console.face("song name")` in the browser console prints a text-art face for that song (`web/js/console-face.js`); keep it working as features change.
 
 Turns music taste into art. A playlist defines **an artist** (a drawing style); each song becomes **a sitter**, a portrait of what that song would look like as a person, drawn in that style. The faces are sketched live, stroke by stroke, like watching someone draw in a sketchbook on a plain white page.
 
@@ -71,7 +71,8 @@ Song picker with a large face, yaw/pitch/roll sliders, "turn slowly"; side panel
 
 - Milestone 1 done (2026-10-05). Run with `python3 serve.py` (no-cache server, port 8123).
 - Style has four music-driven dials: mess, cartoon, distort (Picasso), colour (riso accent, misregistered). Ink hue also from music. User wants it loose, messy, experimental, with dramatic differences.
-- Next: user is keen on the drawing-out animation driven by the song.
+- Sketch animation done (`web/js/animate.js`): artist-order drawing, parts start on beats, pen speed from tempo/energy, 9–20s per face.
+- Next: 3D head rotation (M2/3), then the song pipeline.
 - Known gap for M2: nose doesn't extend the head silhouette at strong yaw (|yaw| > ~0.6).
 
 ## Working notes

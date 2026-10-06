@@ -149,7 +149,8 @@ export class Drawing {
     for (let i = n - 1; i >= 0; i--) d += `L${f1(right[i][0])} ${f1(right[i][1])}`;
     d += "Z";
     const op = (o.opacity ?? 1) * st.inkOpacity * (pass ? 0.6 : 1);
-    this.items.push({ d, fill: o.color ?? "ink", opacity: op, group: this.group });
+    // left/right edges are kept so the animation can draw the stroke progressively
+    this.items.push({ d, fill: o.color ?? "ink", opacity: op, group: this.group, kind: this._hatching ? "hatch" : "stroke", left, right, len: L });
   }
 
   // Filled shape (paper-white to hide what's behind, or solid ink).
@@ -159,7 +160,7 @@ export class Drawing {
     let d = `M${f1(poly[0][0] + ox)} ${f1(poly[0][1] + oy)}`;
     for (let i = 1; i < poly.length; i++) d += `L${f1(poly[i][0] + ox)} ${f1(poly[i][1] + oy)}`;
     d += "Z";
-    this.items.push({ d, fill: o.color ?? "paper", opacity: o.opacity ?? 1, group: this.group });
+    this.items.push({ d, fill: o.color ?? "paper", opacity: o.opacity ?? 1, group: this.group, kind: o.kind ?? "fill" });
   }
 
   // A small blobby dot (pupils, freckles).
@@ -174,14 +175,23 @@ export class Drawing {
       const rr = rad * (1 + 0.12 * Math.sin(a * 2 + ph) + r.range(-0.05, 0.05));
       pts.push([x + Math.cos(a) * rr * sq, y + Math.sin(a) * rr]);
     }
-    this.fill(pts, { color: o.color ?? "ink", opacity: (o.opacity ?? 1) * (o.color === "paper" ? 1 : this.style.inkOpacity) });
+    this.fill(pts, { color: o.color ?? "ink", opacity: (o.opacity ?? 1) * (o.color === "paper" ? 1 : this.style.inkOpacity), kind: "dot" });
   }
 
   // Shading inside a polygon in the artist's hatching style.
   hatch(poly, o = {}) {
+    if (!poly || poly.length < 3) return;
+    this._hatching = true;
+    try {
+      this._hatch(poly, o);
+    } finally {
+      this._hatching = false;
+    }
+  }
+
+  _hatch(poly, o) {
     const st = this.style;
     const r = this.rng;
-    if (!poly || poly.length < 3) return;
     const sp = st.hatchSpacing * (o.spacing ?? 1) * r.range(0.9, 1.1);
     const ang = (o.angle ?? st.hatchAngle) + r.range(-0.08, 0.08);
     const style = o.style ?? st.hatchStyle;
@@ -228,6 +238,10 @@ export class Drawing {
         }
       }
     }
+  }
+
+  colorOf(it, paper = "#ffffff") {
+    return it.fill === "ink" ? this.style.ink : it.fill === "paper" ? paper : it.fill === "accent" ? this.style.accent : it.fill;
   }
 
   toSVG({ width, height, x = 0, y = 0, paper = "#ffffff", grain = false, title = "" } = {}) {

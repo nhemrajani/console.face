@@ -3,18 +3,19 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>untitled</title>
+  <title>console.face()</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <header>
-    <h1>untitled</h1>
-    <p class="sub">Move the music, watch the drawing style change.</p>
+    <h1>console.face()</h1>
+    <p class="sub">Music in, faces out. The song decides how the pen moves.</p>
     <nav class="tabs">
-      <button data-view="one" class="active">One taste</button>
+      <button data-view="sketch" class="active">Sketch</button>
+      <button data-view="one">Sitters</button>
       <button data-view="compare">Compare tastes</button>
     </nav>
   </header>
@@ -22,14 +23,23 @@
   <main>
     <aside class="controls">
       <h2>Music taste</h2>
-      <p class="hint">Examples are made up until real song data arrives (Milestone 4), except the Drake one.</p>
+      <p class="hint">Examples are made up until real song data arrives, except the Drake one.</p>
       <div id="presets" class="chips"></div>
       <div id="sliders"></div>
       <button id="reroll" class="primary">New faces</button>
     </aside>
 
     <section id="stage">
-      <div id="grid" class="grid"></div>
+      <div id="sketch" class="sketch">
+        <svg id="sketch-svg" role="img" aria-label="A face being sketched"></svg>
+        <div class="sketch-bar">
+          <span class="metro" id="metro"></span>
+          <span id="bpm" class="bpm"></span>
+          <button id="redraw">Draw again</button>
+          <label class="speed">speed <input type="range" id="speed" min="0.5" max="4" step="0.25" value="1" /><span id="speed-val">1×</span></label>
+        </div>
+      </div>
+      <div id="grid" class="grid" hidden></div>
       <div id="compare" class="compare" hidden></div>
     </section>
 

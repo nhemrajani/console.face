@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Song Faces</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header>
+    <h1>Song Faces</h1>
+    <p class="sub">Milestone 1 · the artist. Move the music, watch the drawing style change.</p>
+    <nav class="tabs">
+      <button data-view="one" class="active">One taste</button>
+      <button data-view="compare">Compare tastes</button>
+    </nav>
+  </header>
+
+  <main>
+    <aside class="controls">
+      <h2>Music taste</h2>
+      <p class="hint">Examples are made up until real song data arrives (Milestone 4), except the Drake one.</p>
+      <div id="presets" class="chips"></div>
+      <div id="sliders"></div>
+      <button id="reroll" class="primary">New faces</button>
+    </aside>
+
+    <section id="stage">
+      <div id="grid" class="grid"></div>
+      <div id="compare" class="compare" hidden></div>
+    </section>
+
+    <aside class="explain">
+      <h2>How the music shaped this artist</h2>
+      <table id="explain"></table>
+    </aside>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

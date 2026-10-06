@@ -2,7 +2,7 @@
 
 Turns music taste into art. A playlist defines **an artist** (a drawing style); each song becomes **a sitter**, a portrait of what that song would look like as a person, drawn in that style. The faces are sketched live, stroke by stroke, like watching someone draw in a sketchbook on a plain white page.
 
-- **V1:** the user's own favourite songs, a single hand-tuned style.
+- **V1:** the user's own favourite songs. The drawing style is **derived from the music** (never hand-picked): the set of songs defines the artist.
 - **V2:** anyone pastes a Spotify playlist link → the playlist's overall taste defines a unique art style → one face per song, animated as a sketchbook. Published on the user's portfolio, neeha.xyz.
 
 ## Data pipeline (song link → song profile)
@@ -64,6 +64,11 @@ Song picker with a large face, yaw/pitch/roll sliders, "turn slowly"; side panel
 **V2**
 7. Playlist → art style
 8. Public "paste a playlist" version on neeha.xyz (static page + small serverless function holding API keys)
+
+## Status
+
+- Milestone 1 done (2026-10-05). Run with `python3 serve.py` (no-cache server, port 8123).
+- Known gap for M2: nose doesn't extend the head silhouette at strong yaw (|yaw| > ~0.6).
 
 ## Working notes
 

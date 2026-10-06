@@ -16,7 +16,7 @@ You need Python 3 (already on macOS).
 python3 serve.py
 ```
 
-Then open http://localhost:8123. Move the music sliders (or pick an example taste) and watch the drawing style change. **Compare tastes** shows the same four people drawn by seven different "artists".
+Then open http://localhost:8123. Move the music sliders (or pick an example taste) and watch the drawing style change. **Compare tastes** shows the same four people drawn by eight different "artists".
 
 ## How it's built
 

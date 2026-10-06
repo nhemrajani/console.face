@@ -9,5 +9,5 @@ class NoCache(http.server.SimpleHTTPRequestHandler):
         super().end_headers()
 
 handler = functools.partial(NoCache, directory="web")
-print("Song Faces → http://localhost:8123")
+print("Running → http://localhost:8123")
 http.server.ThreadingHTTPServer(("", 8123), handler).serve_forever()

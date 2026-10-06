@@ -4,19 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>console.face()</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/show.css" />
 </head>
 <body>
-  <!-- 1. start: paste a playlist -->
+  <!-- 1. paste a playlist -->
   <section id="start" class="screen">
-    <h1>console.face()</h1>
-    <p class="tag">paste a playlist. get a sketchbook.</p>
     <form id="form" autocomplete="off">
-      <input id="link" type="url" placeholder="https://open.spotify.com/playlist/…" aria-label="Spotify playlist link" spellcheck="false" />
-      <button type="submit" aria-label="Draw">draw →</button>
+      <input id="link" type="url" placeholder="paste a spotify playlist link" aria-label="Spotify playlist link" spellcheck="false" />
+      <button type="submit" aria-label="Draw">→</button>
     </form>
     <p class="error" id="error" role="alert"></p>
   </section>
@@ -24,31 +19,33 @@
   <!-- 2. loading -->
   <section id="loading" class="screen" hidden>
     <div class="pencil"><span></span></div>
-    <p id="status"></p>
   </section>
 
-  <!-- 3. the sketchbook -->
+  <!-- 3. the iPod and the faces -->
   <section id="show" hidden>
-    <header class="book-head">
-      <div>
-        <h2 id="pl-name"></h2>
-        <p id="pl-meta"></p>
+    <div class="ipod" aria-label="Playlist">
+      <div class="lcd">
+        <div class="lcd-head"><span class="play">▶</span><span id="lcd-title"></span><span class="batt"></span></div>
+        <ol id="tracks"></ol>
+        <div class="lcd-bar"><span id="lcd-progress"></span></div>
       </div>
-      <div class="artist" id="artist"></div>
-    </header>
-    <div id="book" class="book"></div>
+      <div class="wheel">
+        <span class="menu">MENU</span>
+        <span class="prev">⏮</span>
+        <span class="next">⏭</span>
+        <span class="pp">⏯</span>
+        <div class="hub"></div>
+      </div>
+    </div>
+    <div id="crowd" class="crowd"></div>
   </section>
 
   <!-- one face, big -->
   <div id="big" class="big" hidden>
     <button class="close" id="close" aria-label="Close">×</button>
-    <div class="big-inner">
-      <div class="big-title" id="big-title"></div>
-      <svg id="big-svg"></svg>
-    </div>
+    <svg id="big-svg"></svg>
   </div>
 
-  <a class="lab-link" href="lab.html">lab</a>
   <script type="module" src="js/show.js"></script>
 </body>
 </html>

@@ -96,14 +96,15 @@ export function randomFace(seed, style) {
 // ---------------------------------------------------------------------
 // Draw a face genome in a style. Returns the Drawing (ordered marks).
 // ---------------------------------------------------------------------
-export function drawFace(face, style, poseOverride) {
+// opts.inkSeed redraws the same face with fresh wobble (for flipbook "boiling" lines).
+export function drawFace(face, style, poseOverride, opts = {}) {
   const pose = poseOverride ?? face.pose;
   const H = makeHead(face.head);
   const cy = CY + 22 * style.cartoon; // bigger cartoon heads sit lower so they fit
   const V = makeView(pose, { S, cx: CX, cy });
   const Vneck = makeView({ yaw: pose.yaw * 0.55, pitch: pose.pitch * 0.2, roll: pose.roll * 0.5 }, { S, cx: CX, cy });
   const Vbody = makeView({ yaw: pose.yaw * 0.2, pitch: 0, roll: pose.roll * 0.25 }, { S, cx: CX, cy });
-  const dr = new Drawing(style, face.seed);
+  const dr = new Drawing(style, opts.inkSeed ?? face.seed);
   const r = makeRng("draw:" + face.seed);
   const light = norm([-0.55, 0.5, 0.65]);
 
@@ -298,7 +299,7 @@ export function drawFace(face, style, poseOverride) {
       }
     }
     // loud, colourful music: a flat block of colour over the whole face
-    if (amt > 0.8 && r.chance(0.6)) {
+    if (amt > 0.8 && r.chance(0.6) && lightness(style.accent) > 0.55) {
       const c0 = centroid(headPoly);
       dr.fill(headPoly.map(([x, y]) => [c0[0] + (x - c0[0]) * 0.9, c0[1] + (y - c0[1]) * 0.9]), { ...opts, opacity: 0.22 });
     }
@@ -940,7 +941,8 @@ export function drawFace(face, style, poseOverride) {
 
   function drawGlasses(kind) {
     const e = face.eyes;
-    const R = e.w * 1.5;
+    // sized from the eyes, but never so big that the two lenses meet (cartoon eyes get huge)
+    const R = Math.min(e.w * 1.5, e.u * H.rx * 0.82);
     const c = 0.11;
     const lens = (side, t) => {
       const a = Math.cos(t * 2 * PI), b = Math.sin(t * 2 * PI);
@@ -1020,4 +1022,10 @@ function lumpy(poly, amount) {
     const k = 1 + amount * 0.07 * (Math.sin(a * 3 + ph) + 0.6 * Math.sin(a * 5 + ph * 2));
     return [c[0] + (x - c[0]) * k, c[1] + (y - c[1]) * k];
   });
+}
+
+// 0 (black) .. 1 (white): a colour wash over the whole face only works with light colours
+function lightness(hex) {
+  const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16) / 255);
+  return 0.299 * r + 0.587 * g + 0.114 * b;
 }

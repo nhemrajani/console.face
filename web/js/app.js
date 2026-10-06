@@ -2,7 +2,7 @@ import { deriveStyle, EXAMPLE_TASTES } from "./style.js";
 import { randomFace, drawFace, FRAME } from "./face.js";
 import { animateDrawing } from "./animate.js";
 import { findSong, applyPersona, loadPlaylist, PLAYLIST } from "./songs.js";
-import { faceForSong } from "./mapping.js";
+import { faceForSong, styleForSong } from "./mapping.js";
 import { installConsoleFace } from "./console-face.js";
 
 installConsoleFace();
@@ -143,7 +143,10 @@ function render() {
     if (usingPlaylist()) {
       // the sketchbook page: every song in your playlist, by the same artist
       $("#grid").innerHTML = songs()
-        .map((s, i) => `<div class="face" data-song="${i}" title="Watch it being drawn">${svgOf(drawFace(faceForSong(s, style, taste).face, style))}<div class="cap">${shortTitle(s.title)}<small>${s.artist.split(",")[0]}</small></div></div>`)
+        .map((s, i) => {
+          const st = styleForSong(s, taste);
+          return `<div class="face" data-song="${i}" title="Watch it being drawn">${svgOf(drawFace(faceForSong(s, st, taste).face, st))}<div class="cap">${shortTitle(s.title)}<small>${s.artist.split(",")[0]}</small></div></div>`;
+        })
         .join("");
     } else {
       const names = ["Ana", "Ben", "Cleo", "Dev", "Eli", "Fay"];
@@ -165,10 +168,12 @@ const shortTitle = (t) => t.replace(/\s*\(.*$|\s+-\s.*$/, ""); // drop "(feat. .
 // The live sketch: a face drawn stroke by stroke in time with the music.
 function renderSketch() {
   anim?.stop();
-  const style = deriveStyle(taste);
+  let style = deriveStyle(taste);
   let face, timing, label, why = null;
   if (usingPlaylist() && !sketchSeed) {
     const song = songs()[songIndex];
+    style = styleForSong(song, taste); // each song draws in its own style
+    renderExplain(style);
     const out = faceForSong(song, style, taste);
     face = out.face;
     timing = out.audio; // the song itself sets the rhythm

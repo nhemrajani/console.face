@@ -244,6 +244,14 @@ export class Drawing {
     return it.fill === "ink" ? this.style.ink : it.fill === "paper" ? paper : it.fill === "accent" ? this.style.accent : it.fill;
   }
 
+  // Just the marks, for swapping frames into an existing <svg>.
+  innerSVG({ width, height, paper = "#ffffff" } = {}) {
+    const paths = this.items
+      .map((it) => `<path d="${it.d}" fill="${this.colorOf(it, paper)}"${it.opacity < 1 ? ` fill-opacity="${f1(it.opacity * 100) / 100}"` : ""}${it.fill === "accent" ? ` style="mix-blend-mode:multiply"` : ""}/>`)
+      .join("");
+    return `<rect width="${width}" height="${height}" fill="${paper}"/>${paths}`;
+  }
+
   toSVG({ width, height, x = 0, y = 0, paper = "#ffffff", grain = false, title = "" } = {}) {
     const ink = this.style.ink;
     const accent = this.style.accent;

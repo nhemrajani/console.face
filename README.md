@@ -16,7 +16,7 @@ python3 serve.py
 
 Then open http://localhost:8123.
 
-**The start page** asks for a Spotify playlist link. Paste any public playlist and press Enter: the local server runs the song pipeline live, and you land on a sketchbook page where every song's face draws itself at its own tempo. Click a face to watch it drawn big. (Songs already in `web/data/songs.json` load instantly and keep their lyric personas.)
+**The start page** is just a box for a Spotify playlist link. Paste any public playlist and press Enter: the local server runs the song pipeline live. An iPod on the left shows the playlist and highlights each song as its face sketches itself on the right, in that song's own style and at its own tempo; finished faces turn to look at each other. Click a face (or a song on the iPod) to watch it drawn big. (Songs already in `web/data/songs.json` load instantly and keep their lyric personas.)
 
 **The lab** (http://localhost:8123/lab.html, or the faint "lab" link in the corner) is the tool for tuning the style:
 

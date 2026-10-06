@@ -5,7 +5,7 @@
 import { deriveStyle } from "./style.js";
 import { randomFace } from "./face.js";
 import { findSong, guessTaste, applyPersona, normalise, PLAYLIST } from "./songs.js";
-import { faceForSong, songAudio } from "./mapping.js";
+import { faceForSong, styleForSong } from "./mapping.js";
 
 const W = 13; // face width in characters
 
@@ -13,7 +13,7 @@ export function songFace(name) {
   const song = findSong(name);
   if (song?.fromPlaylist) {
     // drawn by the artist your playlist defines
-    const style = deriveStyle(PLAYLIST.playlist.taste);
+    const style = styleForSong(song, PLAYLIST.playlist.taste);
     const { face, audio } = faceForSong(song, style, PLAYLIST.playlist.taste);
     return { song, taste: audio, style, face };
   }

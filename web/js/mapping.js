@@ -11,7 +11,8 @@
 import { makeRng } from "./rng.js";
 import { randomFace } from "./face.js";
 import { clamp, lerp } from "./geom.js";
-import { applyPersona } from "./songs.js";
+import { applyPersona, guessTaste } from "./songs.js";
+import { deriveStyle } from "./style.js";
 
 export const FACE_RULES = {
   // mood (valence): happy songs smile and raise their brows; sad songs frown, brows knit
@@ -48,10 +49,27 @@ export function songAudio(song, playlistTaste) {
   };
 }
 
-// Build the face for a song, in a given artist's style. Returns { face, why }.
+// Each song is its own artist: its genre and sound pick the pen, ink and mess.
+// Songs without audio data lean on their lyric persona and their name instead.
+const MOOD_OF = { happy: 0.8, playful: 0.72, confident: 0.6, hopeful: 0.6, bittersweet: 0.42, longing: 0.3, anxious: 0.28, bitter: 0.2, sad: 0.15 };
+export function tasteForSong(song, playlistTaste) {
+  const a = songAudio(song, playlistTaste);
+  if (a.missing) {
+    const g = guessTaste(song.title + " " + song.artist);
+    for (const k of ["tempo", "energy", "acousticness", "danceability", "speechiness"]) a[k] = lerp(playlistTaste[k], g[k], 0.6);
+    a.valence = MOOD_OF[song.persona?.sentiment] ?? lerp(playlistTaste.valence, g.valence, 0.6);
+  }
+  return { ...a, variety: 0.35 };
+}
+
+export function styleForSong(song, playlistTaste) {
+  return deriveStyle(tasteForSong(song, playlistTaste));
+}
+
+// Build the face for a song, in a given artist's style. Returns { face, why, audio }.
 export function faceForSong(song, style, playlistTaste) {
   const k = FACE_RULES;
-  const a = songAudio(song, playlistTaste);
+  const a = tasteForSong(song, playlistTaste);
   const r = makeRng("map:" + song.id);
   const face = randomFace("song:" + song.id, style);
   const why = [];

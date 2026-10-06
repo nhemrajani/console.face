@@ -1,8 +1,12 @@
-# Song Faces
+# untitled
+
+*(working title — name to be decided)*
 
 Turns music taste into art. The music decides **how** faces are drawn (the artist's pen, shaky or calm hand, shading, proportions), and each song becomes **a person** drawn in that style. Faces are sketchy ink doodles on a plain white page.
 
 🚧 Work in progress: currently at **Milestone 1** (the music-driven drawing style, with random faces).
+
+Every portrait is generated entirely in JavaScript: no images, no AI image models.
 
 ## Run it
 
@@ -18,7 +22,7 @@ Then open http://localhost:8123. Move the music sliders (or pick an example tast
 
 | File | What it does |
 |---|---|
-| `web/js/style.js` | **The artist.** Turns music taste (tempo, energy, mood…) into drawing habits. `STYLE_RULES` at the top is the place to tweak. |
+| `web/js/style.js` | **The artist.** Turns music taste (tempo, energy, mood…) into drawing habits: the four big dials (mess, cartoon, distortion, colour), the pen, and the ink colours. |
 | `web/js/face.js` | **The sitter.** Builds a face (eyes, nose, hair, clothes…) on a 3D head and draws it in the artist's style. |
 | `web/js/head.js` | The invisible 3D head and camera, so features foreshorten when the head turns. |
 | `web/js/ink.js` | Hand-drawn strokes: wobble, shake, pressure, overshoot, re-traced lines, hatching. |

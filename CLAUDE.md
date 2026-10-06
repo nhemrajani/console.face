@@ -1,4 +1,6 @@
-# Song Faces
+# untitled (working title)
+
+The user dislikes the name "Song Faces": never show it in the UI, page titles, or docs. Repo/folder are still named `song-faces` until a new name is chosen.
 
 Turns music taste into art. A playlist defines **an artist** (a drawing style); each song becomes **a sitter**, a portrait of what that song would look like as a person, drawn in that style. The faces are sketched live, stroke by stroke, like watching someone draw in a sketchbook on a plain white page.
 
@@ -68,6 +70,8 @@ Song picker with a large face, yaw/pitch/roll sliders, "turn slowly"; side panel
 ## Status
 
 - Milestone 1 done (2026-10-05). Run with `python3 serve.py` (no-cache server, port 8123).
+- Style has four music-driven dials: mess, cartoon, distort (Picasso), colour (riso accent, misregistered). Ink hue also from music. User wants it loose, messy, experimental, with dramatic differences.
+- Next: user is keen on the drawing-out animation driven by the song.
 - Known gap for M2: nose doesn't extend the head silhouette at strong yaw (|yaw| > ~0.6).
 
 ## Working notes

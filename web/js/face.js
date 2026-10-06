@@ -18,6 +18,8 @@ const PI = Math.PI;
 export function randomFace(seed, style) {
   const r = makeRng("face:" + seed);
   const ex = style.exaggeration;
+  const c = style.cartoon; // 0 = real proportions, 1 = big head, huge eyes, tiny body
+  const dz = style.distort; // 0 = normal, 1 = Picasso
   const vr = style.variety;
   const sp = (a, b) => lerp((a + b) / 2, a, vr) + (lerp((a + b) / 2, b, vr) - lerp((a + b) / 2, a, vr)) * r.next();
 
@@ -28,26 +30,26 @@ export function randomFace(seed, style) {
   return {
     seed,
     head: {
-      rx: sp(0.7, 0.86) * (1 + r.range(0, 0.18) * ex) * (1 - style.elongation * 0.35),
-      ry: (1 + style.elongation) * (1 + r.range(-0.07, 0.1) * vr),
+      rx: sp(0.7, 0.86) * (1 + r.range(0, 0.18) * ex) * (1 - style.elongation * 0.35) * (1 + 0.45 * c),
+      ry: (1 + style.elongation) * (1 + r.range(-0.07, 0.1) * vr) * (1 + 0.32 * c),
       rz: r.range(0.84, 0.95),
       jaw: sp(0.48, 0.86),
       square: clamp(lerp(0.66, 1.0, style.roundness) + r.range(-0.1, 0.1) * vr, 0.55, 1.05),
     },
     eyes: {
       type: r.weighted(style.eyeWeights),
-      u: sp(0.3, 0.4),
-      v: r.range(-0.04, 0.06),
-      w: sp(0.095, 0.13) * (1 + r.range(0.2, 0.9) * ex),
+      u: sp(0.3, 0.4) + 0.04 * c,
+      v: r.range(-0.04, 0.06) - 0.12 * c,
+      w: sp(0.095, 0.13) * (1 + r.range(0.2, 0.9) * ex) * (1 + 1.5 * c),
       h: r.range(0.45, 0.72),
       lid: clamp((r.chance(0.35) ? r.range(0.25, 0.55) : r.range(0, 0.15)) + style.droop * 0.35, 0, 0.7),
       tilt: r.range(-0.6, 0.6),
       gaze: [r.range(-0.7, 0.7), r.range(-0.4, 0.3)],
-      lashes: r.chance(0.3),
+      lashes: r.chance(0.3 * (1 - c)),
     },
     brows: { thick: r.range(0.7, 1.7), arch: r.range(0, 0.045), tilt: r.range(-0.7, 0.7), lift: r.range(0.15, 0.22), w: r.range(0.12, 0.17), kind: r.weighted({ line: 3, hairy: 1.2, block: style.fillBlacks + 0.2 }) },
-    nose: { kind: r.weighted({ L: 3, button: 1.5 + ex * 2, long: 1.5, wide: 1 }), len: sp(0.24, 0.36), proj: r.range(0.1, 0.2) * (1 + ex * 0.5), w: sp(0.07, 0.13) * (1 + ex * 0.4), side: r.sign() },
-    mouth: { v: r.range(-0.66, -0.55), w: sp(0.13, 0.22) * (1 + ex * 0.3), smile, open: r.chance(0.28) ? r.range(0.3, 1) : 0, smirk: r.chance(0.4) ? r.range(-0.8, 0.8) : 0, lip: r.chance(0.55) },
+    nose: { kind: r.weighted({ L: 3 * (1 - c), button: 1.5 + c * 6, long: 1.5 * (1 - c), wide: 1 }), len: sp(0.24, 0.36) * (1 - 0.4 * c), proj: r.range(0.1, 0.2) * (1 + ex * 0.5), w: sp(0.07, 0.13) * (1 + ex * 0.4), side: r.sign() },
+    mouth: { v: r.range(-0.66, -0.55) + 0.06 * c, w: sp(0.13, 0.22) * (1 + c * 0.35), smile, open: r.chance(0.28) ? r.range(0.3, 1) : 0, smirk: r.chance(0.4) ? r.range(-0.8, 0.8) : 0, lip: r.chance(0.55) },
     ears: { size: sp(0.18, 0.25) * (1 + ex * r.range(0, 0.4)), stick: r.range(0.2, 1), v: r.range(-0.18, -0.08) },
     hair: {
       style: hairStyle,
@@ -60,8 +62,8 @@ export function randomFace(seed, style) {
     },
     details: {
       freckles: r.chance(0.3) ? r.int(8, 30) * style.detail : 0,
-      stubble: r.chance(0.25) ? r.range(0.4, 1) : 0,
-      wrinkles: r.chance(0.35) ? r.range(0.3, 1) * (0.5 + style.detail) : 0,
+      stubble: r.chance(0.25 * (1 - c)) ? r.range(0.4, 1) : 0,
+      wrinkles: r.chance(0.35 * (1 - c)) ? r.range(0.3, 1) * (0.5 + style.detail) : 0,
       moles: r.chance(0.3) ? r.int(1, 2) : 0,
       blush: r.chance(0.2 + 0.3 * style.exaggeration),
     },
@@ -73,7 +75,16 @@ export function randomFace(seed, style) {
       headphones: r.chance(0.07),
       tear: r.chance(0.08),
     },
-    body: { neckW: r.range(0.24, 0.33) * (1 - style.elongation * 0.4), shoulders: r.range(1.35, 1.8), top: r.pick(["crew", "crew", "v", "collar", "hoodie"]), dark: r.chance(style.fillBlacks * 0.6) },
+    body: { neckW: r.range(0.24, 0.33) * (1 - style.elongation * 0.4) * (1 - 0.3 * c), shoulders: r.range(1.35, 1.8) * (1 - 0.42 * c), top: r.pick(["crew", "crew", "v", "collar", "hoodie"]), dark: r.chance(style.fillBlacks * 0.6) },
+    // Picasso-style dislocation, scaled by the artist's distortion dial
+    warp: {
+      eyeDy: [r.range(-1, 1) * dz * 0.16, r.range(-1, 1) * dz * 0.16],
+      eyeScale: [1 + r.range(-1, 1) * dz * 0.5, 1 + r.range(-1, 1) * dz * 0.5],
+      noseYaw: r.sign() * dz * r.range(0.7, 1.3),
+      mouthDu: r.range(-1, 1) * dz * 0.2,
+      mouthTilt: r.range(-1, 1) * dz,
+      lumpy: dz,
+    },
     pose: {
       yaw: r.range(-1, 1) * (0.1 + style.tilt * 1.1),
       pitch: r.range(-0.12, 0.1),
@@ -88,9 +99,10 @@ export function randomFace(seed, style) {
 export function drawFace(face, style, poseOverride) {
   const pose = poseOverride ?? face.pose;
   const H = makeHead(face.head);
-  const V = makeView(pose, { S, cx: CX, cy: CY });
-  const Vneck = makeView({ yaw: pose.yaw * 0.55, pitch: pose.pitch * 0.2, roll: pose.roll * 0.5 }, { S, cx: CX, cy: CY });
-  const Vbody = makeView({ yaw: pose.yaw * 0.2, pitch: 0, roll: pose.roll * 0.25 }, { S, cx: CX, cy: CY });
+  const cy = CY + 22 * style.cartoon; // bigger cartoon heads sit lower so they fit
+  const V = makeView(pose, { S, cx: CX, cy });
+  const Vneck = makeView({ yaw: pose.yaw * 0.55, pitch: pose.pitch * 0.2, roll: pose.roll * 0.5 }, { S, cx: CX, cy });
+  const Vbody = makeView({ yaw: pose.yaw * 0.2, pitch: 0, roll: pose.roll * 0.25 }, { S, cx: CX, cy });
   const dr = new Drawing(style, face.seed);
   const r = makeRng("draw:" + face.seed);
   const light = norm([-0.55, 0.5, 0.65]);
@@ -101,8 +113,12 @@ export function drawFace(face, style, poseOverride) {
     const n = H.normal(u, v);
     return { P: add(H.point(u, v), mul(n, c)), N: n };
   };
-  const P2 = (s) => V.proj(s.P);
-  const vis = (s, t = 0) => V.facing(s.N) > t;
+  let VV = V, shift = [0, 0]; // the nose can be drawn from a different angle (distortion)
+  const P2 = (s) => {
+    const p = VV.proj(s.P);
+    return [p[0] + shift[0], p[1] + shift[1]];
+  };
+  const vis = (s, t = 0) => VV.facing(s.N) > t;
   const curve = (samples, o = {}) => {
     for (const run of runs(samples, (s) => vis(s, o.vis ?? 0.0), 2)) dr.stroke(run.map(P2), o);
   };
@@ -130,10 +146,12 @@ export function drawFace(face, style, poseOverride) {
       }
     return out;
   };
-  const headPoly = contoursOf(quads())[0];
+  const headPoly = lumpy(contoursOf(quads())[0], face.warp.lumpy);
   const frontSign = Math.sign(polyArea([V.proj(H.point(-0.1, -0.1)), V.proj(H.point(0.1, -0.1)), V.proj(H.point(0.1, 0.1)), V.proj(H.point(-0.1, 0.1))]));
 
   const hair = face.hair;
+  let shirtPoly = null, curtainPoly = null;
+  const hairPolys = [];
   const hasCurtain = ["long", "wavy", "fringe"].includes(hair.style);
   const hairOverEars = hasCurtain;
 
@@ -141,7 +159,7 @@ export function drawFace(face, style, poseOverride) {
 
   // 1. construction lines: the faint guides some artists leave in
   if (style.construction > 0.05) {
-    dr.setGroup("construction");
+    dr.setGroup("construction", { slip: false });
     const o = { weight: 0.35, opacity: 0.18 + 0.3 * style.construction, wobble: 0.6, passes: 1, taper: 0.8 };
     const c = V.proj([0, 0.12, 0]);
     const rad = H.rx * S * 1.02;
@@ -157,11 +175,11 @@ export function drawFace(face, style, poseOverride) {
   }
 
   // 3. body and clothes
-  dr.setGroup("body");
+  dr.setGroup("body", { slip: false });
   drawBody();
 
   // 4. neck
-  dr.setGroup("neck");
+  dr.setGroup("neck", { slip: false });
   drawNeck();
   if (face.acc.chain) drawChain();
 
@@ -171,9 +189,15 @@ export function drawFace(face, style, poseOverride) {
   if (!hairOverEars) for (const side of [-1, 1]) if (side !== nearSide) drawEar(side);
 
   // 6. head outline
-  dr.setGroup("head");
+  dr.setGroup("head", { slip: false });
   dr.fill(headPoly);
   dr.stroke(headPoly, { closed: true, weight: 1.15, breaks: style.lineBreaks });
+  if (style.mess > 0.45) {
+    // a second, looser go at the outline
+    const c0 = centroid(headPoly), k = 1 + r.range(0.01, 0.04) * style.mess * 2;
+    const dx = r.range(-3, 3) * style.mess, dy = r.range(-3, 3) * style.mess;
+    dr.stroke(headPoly.map(([x, y]) => [c0[0] + (x - c0[0]) * k + dx, c0[1] + (y - c0[1]) * k + dy]), { closed: true, weight: 0.5, opacity: 0.4, breaks: style.lineBreaks + 1, passes: 1 });
+  }
 
   // 7. shading
   if (style.shadow > 0.08) {
@@ -195,7 +219,16 @@ export function drawFace(face, style, poseOverride) {
   dr.setGroup("brows");
   for (const side of [-1, 1]) drawBrow(side);
   dr.setGroup("nose");
+  if (Math.abs(face.warp.noseYaw) > 0.15) {
+    // Picasso: the nose is seen from the side while the face looks at you
+    const bridge = surf(0, face.eyes.v, 0, -0.05, 0).P;
+    VV = makeView({ ...pose, yaw: pose.yaw + face.warp.noseYaw }, { S, cx: CX, cy });
+    const a = V.proj(bridge), b = VV.proj(bridge);
+    shift = [a[0] - b[0], a[1] - b[1]];
+  }
   drawNose();
+  VV = V;
+  shift = [0, 0];
   dr.setGroup("mouth");
   drawMouth();
   if (face.acc.tear) drawTear();
@@ -210,7 +243,66 @@ export function drawFace(face, style, poseOverride) {
   if (face.acc.glasses) drawGlasses(face.acc.glasses);
   if (face.acc.headphones) drawHeadphones();
 
+  // 12. the second print colour, laid on slightly out of register
+  if (style.colour > 0.12) {
+    dr.setGroup("colour", { slip: false });
+    drawColourLayer();
+  }
+
+  // 13. mess: ink flicks and stray marks
+  dr.setGroup("mess", { slip: false });
+  if (style.splatter > 0.05) {
+    for (let i = 0; i < 1 + Math.round(style.splatter * 3); i++) {
+      const p = headPoly[Math.floor(r.next() * headPoly.length)];
+      dr.splatter(p[0] + r.range(-10, 10), p[1] + r.range(-10, 10), style.splatter);
+    }
+  }
+  if (style.mess > 0.5) {
+    for (let i = 0; i < Math.round((style.mess - 0.4) * 6); i++) {
+      const x = r.range(20, 280), y = r.range(20, 340);
+      const n = r.int(3, 7), len = r.range(6, 16);
+      dr.stroke(sampleT(n, (t) => [x + t * len + r.range(-1, 1), y + (Math.round(t * n) % 2 ? -1 : 1) * r.range(1, 4)]), { weight: 0.45, opacity: 0.6, passes: 1, connect: false });
+    }
+  }
+
   return dr;
+
+  function drawColourLayer() {
+    const amt = style.colour;
+    const reg = [r.sign() * r.range(0.5, 1) * (3 + 9 * style.mess), r.sign() * r.range(0.5, 1) * (2 + 7 * style.mess)];
+    const op = 0.55 + 0.35 * amt;
+    const opts = { color: "accent", opacity: op, offset: reg };
+    const choices = [];
+    if (shirtPoly && !face.body.dark) choices.push(() => dr.fill(shirtPoly, opts));
+    if (hairPolys.length && hair.fill !== "solid") choices.push(() => hairPolys.forEach((p) => dr.fill(p, opts)));
+    if (curtainPoly && hair.fill !== "solid") {
+      // only the part of the long hair you can actually see beside the face
+      const visible = contoursOf([curtainPoly], { erase: [headPoly], minArea: 60 });
+      choices.push(() => visible.forEach((p) => dr.fill(p, { ...opts, opacity: op * 0.8 })));
+    }
+    // pick how many colour areas from the colour dial
+    const n = Math.min(choices.length, amt > 0.72 ? 2 : 1);
+    for (let i = choices.length - 1; i > 0; i--) {
+      const j = Math.floor(r.next() * (i + 1));
+      [choices[i], choices[j]] = [choices[j], choices[i]];
+    }
+    choices.slice(0, n).forEach((f) => f());
+    // cheeks
+    if (amt > 0.25 || face.details.blush) {
+      for (const side of [-1, 1]) {
+        const sC = surf(side * 0.45, face.eyes.v, 0, -0.24, 0.01);
+        if (!vis(sC, 0.2)) continue;
+        const [x, y] = P2(sC);
+        const rad = 7 + 6 * style.cartoon;
+        dr.fill(sampleT(18, (t) => [x + Math.cos(t * 2 * PI) * rad * r.range(0.9, 1.1), y + Math.sin(t * 2 * PI) * rad * 0.7]), { ...opts, opacity: op * 0.7 });
+      }
+    }
+    // loud, colourful music: a flat block of colour over the whole face
+    if (amt > 0.8 && r.chance(0.6)) {
+      const c0 = centroid(headPoly);
+      dr.fill(headPoly.map(([x, y]) => [c0[0] + (x - c0[0]) * 0.9, c0[1] + (y - c0[1]) * 0.9]), { ...opts, opacity: 0.22 });
+    }
+  }
 
   // ======================= feature functions =======================
 
@@ -226,6 +318,7 @@ export function drawFace(face, style, poseOverride) {
     if (b.top === "v") neckline = [[-nw * 1.15, -1.36], [-nw * 0.5, -1.65], [0, -1.92], [nw * 0.5, -1.65], [nw * 1.15, -1.36]];
     else neckline = [[-nw * 1.3, -1.36], [-nw * 0.8, -1.55], [0, -1.62], [nw * 0.8, -1.55], [nw * 1.3, -1.36]];
     const NL = chaikin(neckline.map(([x, y]) => B(x, y, 0.05)), 2);
+    shirtPoly = [...NL, ...R.slice(2), ...L.slice(2).reverse()];
     if (b.dark) {
       const shirt = [...NL, ...R.slice(2), ...L.slice(2).reverse()];
       if (style.fillBlacks > 0.45) dr.fill(shirt, { color: "ink", opacity: 0.9 });
@@ -310,8 +403,9 @@ export function drawFace(face, style, poseOverride) {
 
   function drawEye(side) {
     const e = face.eyes;
-    const u0 = side * e.u, v0 = e.v;
-    const w = e.w, h = e.w * e.h;
+    const k = side > 0 ? 1 : 0;
+    const u0 = side * e.u, v0 = e.v + face.warp.eyeDy[k];
+    const w = e.w * face.warp.eyeScale[k], h = w * e.h;
     const L = (a, b, c = 0.012) => surf(u0, v0, a, b, c);
     if (!vis(L(0, 0), 0.08)) return;
     const Q = (a, b, c) => P2(L(a, b, c));
@@ -330,7 +424,7 @@ export function drawFace(face, style, poseOverride) {
     }
 
     if (e.type === "dot") {
-      const R = w * 0.32;
+      const R = w * (0.3 + 0.12 * style.cartoon);
       const cx = gx * w * 0.3, cy = gy * R * 0.4;
       const cap = R * (1 - 2 * e.lid * 1.1);
       const poly = sampleT(16, (t) => Q(cx + Math.cos(t * 2 * PI) * R, cy + Math.min(cap, Math.sin(t * 2 * PI) * R * 1.15)));
@@ -482,7 +576,7 @@ export function drawFace(face, style, poseOverride) {
   function drawMouth() {
     const m = face.mouth;
     const { w, up, lo } = mouthCurves();
-    const M = (a, b) => surf(0, m.v, a, b, 0.015);
+    const M = (a, b) => surf(face.warp.mouthDu, m.v, a, b + face.warp.mouthTilt * 0.05 * (a / w), 0.015);
     if (!vis(M(0, 0), 0.05)) return;
     const upper = sampleT(20, (t) => lerp(-w, w, t)).map((a) => M(a, up(a)));
     if (m.open > 0.05) {
@@ -648,6 +742,7 @@ export function drawFace(face, style, poseOverride) {
     const size = { short: 0.6, messy: 1.3, curly: 0.9, afro: 1.5, wavy: 0.8 }[hair.style] ?? 1;
     for (const poly of polys) {
       const shape = hair.style === "buzz" ? poly : decorate(poly, outline, size);
+      hairPolys.push(shape);
       if (hair.fill === "solid" && hair.style !== "buzz") {
         dr.fill(shape, { color: "ink", opacity: 0.93 * style.inkOpacity });
       } else {
@@ -793,6 +888,7 @@ export function drawFace(face, style, poseOverride) {
     const poly = contoursOf(qs)[0];
     if (!poly) return;
     const shape = wavy ? decorate(poly, "wave", 1.2) : poly;
+    curtainPoly = shape;
     if (hair.fill === "solid") dr.fill(shape, { color: "ink", opacity: 0.93 * style.inkOpacity });
     else {
       dr.fill(shape);
@@ -903,4 +999,25 @@ function avg(vs) {
     s[2] += v[2];
   }
   return norm(s);
+}
+
+function centroid(poly) {
+  let x = 0, y = 0;
+  for (const p of poly) {
+    x += p[0];
+    y += p[1];
+  }
+  return [x / poly.length, y / poly.length];
+}
+
+// Push an outline in and out with slow noise: a lumpy, hand-made head.
+function lumpy(poly, amount) {
+  if (!poly || amount < 0.05) return poly;
+  const c = centroid(poly);
+  const ph = poly.length % 7;
+  return poly.map(([x, y]) => {
+    const a = Math.atan2(y - c[1], x - c[0]);
+    const k = 1 + amount * 0.07 * (Math.sin(a * 3 + ph) + 0.6 * Math.sin(a * 5 + ph * 2));
+    return [c[0] + (x - c[0]) * k, c[1] + (y - c[1]) * k];
+  });
 }

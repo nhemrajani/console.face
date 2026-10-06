@@ -16,10 +16,17 @@ export class Drawing {
     this.rng = makeRng("ink:" + seed);
     this.items = []; // {d, fill, opacity, group}
     this.group = "misc";
+    this.offset = [0, 0];
+    this.lastEnd = null;
   }
 
-  setGroup(name) {
+  // Each group of marks (eyes, nose, hair…) slips a little out of place,
+  // like a loose hand or a misaligned print. Messier artists slip more.
+  setGroup(name, { slip = true } = {}) {
     this.group = name;
+    const m = slip ? this.style.misreg : 0;
+    this.offset = [this.rng.range(-1, 1) * m, this.rng.range(-1, 1) * m * 0.7];
+    this.lastEnd = null;
   }
 
   // A line through 2D screen points.
@@ -61,8 +68,32 @@ export class Drawing {
     } else pieces = [base];
 
     const passes = o.passes ?? (total > 25 ? st.passes : 1);
-    for (const piece of pieces) {
+    pieces.forEach((piece, i) => {
+      // messy artists leave bits of long outlines unfinished
+      if (pieces.length > 1 && i > 0 && r.chance(st.gaps)) return;
+      // smooth, quiet music: the pen never lifts, so strokes are joined by faint travel lines
+      if (st.connect > 0.05 && o.connect !== false && this.lastEnd) {
+        const a = this.lastEnd, b = piece[0];
+        const d = dist(a, b);
+        if (d > 3 && d < 70) this._ribbon([a, [(a[0] + b[0]) / 2 + r.range(-6, 6), (a[1] + b[1]) / 2 + r.range(-6, 6)], b], { weight: 0.35, opacity: 0.25 + 0.5 * st.connect, wobble: 1.5, noOvershoot: true }, 0, false);
+      }
       for (let pass = 0; pass < passes; pass++) this._ribbon(piece, o, pass, !closed || breaks > 1);
+      if (o.connect !== false) this.lastEnd = piece[piece.length - 1];
+    });
+  }
+
+  // Ink flicks: blots and spatter near a point (loud, fast music).
+  splatter(x, y, amount) {
+    const r = this.rng;
+    const n = Math.round(r.range(2, 9) * amount);
+    for (let i = 0; i < n; i++) {
+      const a = r.range(0, Math.PI * 2), d = r.range(2, 22) * (0.5 + amount);
+      this.dot(x + Math.cos(a) * d, y + Math.sin(a) * d, r.range(0.3, 1.2) * (r.chance(0.12) ? 2.6 : 1));
+    }
+    if (r.chance(amount * 0.5)) {
+      const len = r.range(8, 30);
+      this.stroke([[x, y], [x + r.range(-1, 1), y + len * 0.5], [x + r.range(-1.5, 1.5), y + len]], { weight: 0.8, taper: 1, noOvershoot: true, connect: false, passes: 1 });
+      this.dot(x, y + len + 1, 1.3);
     }
   }
 
@@ -109,7 +140,7 @@ export class Drawing {
       const endF = clamp(Math.min(t, 1 - t) / Math.min(0.5, 10 / L));
       const tw = 1 - taper + taper * Math.pow(endF, 0.6);
       const w = Math.max(0.22, baseW * (1 + st.pressureVar * nW(ph + s[i] / 25)) * tw) / 2;
-      const cx = p[i][0] + nx * disp + off[0], cy = p[i][1] + ny * disp + off[1];
+      const cx = p[i][0] + nx * disp + off[0] + this.offset[0], cy = p[i][1] + ny * disp + off[1] + this.offset[1];
       left.push([cx + nx * w, cy + ny * w]);
       right.push([cx - nx * w, cy - ny * w]);
     }
@@ -124,8 +155,9 @@ export class Drawing {
   // Filled shape (paper-white to hide what's behind, or solid ink).
   fill(poly, o = {}) {
     if (!poly || poly.length < 3) return;
-    let d = `M${f1(poly[0][0])} ${f1(poly[0][1])}`;
-    for (let i = 1; i < poly.length; i++) d += `L${f1(poly[i][0])} ${f1(poly[i][1])}`;
+    const [ox, oy] = o.offset ?? this.offset;
+    let d = `M${f1(poly[0][0] + ox)} ${f1(poly[0][1] + oy)}`;
+    for (let i = 1; i < poly.length; i++) d += `L${f1(poly[i][0] + ox)} ${f1(poly[i][1] + oy)}`;
     d += "Z";
     this.items.push({ d, fill: o.color ?? "paper", opacity: o.opacity ?? 1, group: this.group });
   }
@@ -154,7 +186,7 @@ export class Drawing {
     const ang = (o.angle ?? st.hatchAngle) + r.range(-0.08, 0.08);
     const style = o.style ?? st.hatchStyle;
     const hw = o.weight ?? 0.45;
-    const lineOpts = { weight: hw, wobble: 0.3, jitter: 0.5, passes: 1, taper: 0.6, overshoot: 0.3, opacity: o.opacity ?? 0.9 };
+    const lineOpts = { weight: hw, wobble: 0.3, jitter: 0.5, passes: 1, taper: 0.6, overshoot: 0.3, opacity: o.opacity ?? 0.9, connect: false, color: o.color };
 
     if (style === "stipple") {
       const bb = bbox(poly);
@@ -200,8 +232,13 @@ export class Drawing {
 
   toSVG({ width, height, x = 0, y = 0, paper = "#ffffff", grain = false, title = "" } = {}) {
     const ink = this.style.ink;
+    const accent = this.style.accent;
     const body = this.items
-      .map((it) => `<path d="${it.d}" fill="${it.fill === "ink" ? ink : it.fill === "paper" ? paper : it.fill}"${it.opacity < 1 ? ` fill-opacity="${f1(it.opacity * 100) / 100}"` : ""}/>`)
+      .map((it) => {
+        const fill = it.fill === "ink" ? ink : it.fill === "paper" ? paper : it.fill === "accent" ? accent : it.fill;
+        const blend = it.fill === "accent" ? ` style="mix-blend-mode:multiply"` : "";
+        return `<path d="${it.d}" fill="${fill}"${it.opacity < 1 ? ` fill-opacity="${f1(it.opacity * 100) / 100}"` : ""}${blend}/>`;
+      })
       .join("");
     const grainDef = grain
       ? `<filter id="grain"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -1.6 1.25"/></filter>`

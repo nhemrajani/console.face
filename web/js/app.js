@@ -102,11 +102,13 @@ function render() {
 }
 
 function renderExplain(style) {
-  $("#explain").innerHTML = style.explain
-    .map(([k, v, why]) => {
-      const sw = k === "Ink" ? `<span class="swatch" style="background:${v}"></span>` : "";
-      return `<tr><td>${k}</td><td>${sw}<b>${v}</b><small>${why}</small></td></tr>`;
-    })
+  const bar = (x) => `<span class="bar"><span style="width:${Math.round(x * 100)}%"></span></span>`;
+  $("#artist").innerHTML =
+    `<div class="pen">${style.pen}</div>` +
+    `<div class="inks"><span class="swatch" style="background:${style.ink}"></span>ink <span class="swatch" style="background:${style.accent}"></span>${style.accentName}</div>` +
+    style.dials.map(([k, v]) => `<div class="dial"><span>${k}</span>${bar(v)}<em>${Math.round(v * 100)}%</em></div>`).join("");
+  $("#mapping").innerHTML = style.mapping
+    .map((m) => `<div class="map"><div class="in"><b>${m.input}</b><em>${m.value}</em></div>${bar(m.level)}<div class="fx">${m.effects.map((e) => `<span>${e}</span>`).join("")}</div></div>`)
     .join("");
 }
 

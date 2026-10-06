@@ -118,13 +118,7 @@ export function animateDrawing(svg, drawing, style, { width, height, speed = 1, 
       const k = clamp((now - ev.start) / ev.dur);
       const el = els[i];
       const it = ev.it;
-      if (it.kind === "dot") {
-      // dots are quick taps of the pen
-      events[i] = { it, start: now, dur: 0.06 };
-      now += 0.012;
-      continue;
-    }
-    if (it.kind === "fill") {
+      if (it.kind === "fill" || it.kind === "dot") {
         if (!el.getAttribute("d")) el.setAttribute("d", it.d);
         el.setAttribute("fill-opacity", (it.opacity ?? 1) * k);
       } else {

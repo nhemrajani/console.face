@@ -1,0 +1,16 @@
+{
+  "spotify_id": "03rwnftfgpYVO6QDWOZcG6",
+  "title": "Drew A Picasso",
+  "artist": "Drake",
+  "sources": { "metadata": "spotify-oembed", "audio": "reccobeats", "lyrics": "lrclib (analysed, not stored)" },
+  "audio": {
+    "tempo": 127.921, "key": 7, "mode": 1, "energy": 0.377, "valence": 0.147,
+    "danceability": 0.709, "acousticness": 0.334, "speechiness": 0.219, "loudness": -11.327
+  },
+  "persona": {
+    "summary": "A proud man up too late, hurt but pretending he isn't. Self-aware enough to admit he was wrong, too proud to say it to her face.",
+    "themes": ["heartbreak", "jealousy", "regret", "wounded pride", "late night", "wealth"],
+    "sentiment": "bitter",
+    "details": ["averted gaze", "half smirk hiding hurt", "heavy-lidded tired eyes", "stubble", "gold chain", "phone (the text he shouldn't have sent)"]
+  }
+}

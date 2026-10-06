@@ -17,6 +17,8 @@ Spotify track link ─► title + artist   (open.spotify.com/oembed, embed page;
 Spotify playlist link ─► track list (open.spotify.com/embed/playlist/<id>, __NEXT_DATA__; no auth, undocumented)
 ```
 
+Official Spotify Web API is also available: the user has Spotify Premium (required for dev apps since Feb 2026). Use client-credentials auth for public playlists/tracks; keys live in `.env` (git-ignored). Spotify-owned editorial/algorithmic playlists are blocked for new apps, so keep the embed-page route as a fallback.
+
 Verified working 2026-10-05. See `samples/drew-a-picasso.json` for a real profile.
 
 **Hard rules**
